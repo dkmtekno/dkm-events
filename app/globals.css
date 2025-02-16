@@ -19,3 +19,11 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.btn-submit {
+  background-color: #3385FF;
+}
+
+.btn-submit:hover {
+  background-color: #002966;
+}

@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { toast, Toaster } from "react-hot-toast";
+import Image from "next/image";
 
 export default function FormPage() {
   const [formData, setFormData] = useState({
@@ -9,66 +12,117 @@ export default function FormPage() {
     nim: "",
     status: "",
     angkatan: "",
+    divisi: "",
+    periode: "",
   });
+
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlide((prev) => (prev === 0 ? 1 : 0));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      ...(name === "status" && value !== "Panitia" ? { angkatan: "" } : {}),
+      ...(name === "status"
+        ? {
+            nim: value === "Dosen" ? "" : prev.nim,
+            angkatan: value === "Mahasiswa" ? "" : "",
+            divisi: value === "Panitia" ? "" : "",
+            periode: value === "Anggota DKM" ? "" : "",
+          }
+        : {}),
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await fetch("/api/form/route", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const response = await fetch("/api/form", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    if (response.ok) {
-      alert("Data berhasil disimpan!");
-      setFormData({ nama: "", prodi: "", nim: "", status: "", angkatan: "" });
-    } else {
-      alert("Terjadi kesalahan!");
+      if (res.ok) {
+        toast.success("Data berhasil disimpan!");
+        setFormData({
+          nama: "",
+          prodi: "",
+          nim: "",
+          status: "",
+          angkatan: "",
+          divisi: "",
+          periode: "",
+        });
+      } else {
+        toast.error("Gagal menyimpan data.");
+      }
+    } catch (error) {
+      toast.error("Terjadi kesalahan, coba lagi.");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-8 py-12">
-      <div className="flex flex-col md:flex-row w-full max-w-6xl gap-12 items-center">
-        {/* Bagian Kiri (Teks + Gambar) */}
-        <div className="md:w-1/2 text-center md:text-left space-y-6">
-          <h2 className="text-3xl font-bold text-blue-600">
-            Jadilah Bagian dari Keberkahan!
-          </h2>
-          <p className="text-lg text-gray-600">
-            Kelola kehadiran dan aktivitas DKM dengan lebih mudah dan efisien.
-            Bersama, kita tingkatkan kegiatan keislaman yang lebih baik.
-          </p>
-          <img
-            src="/logo_dkm_paramadina.png"
-            alt="DKM"
-            className="w-full max-w-sm md:max-w-md mx-auto md:mx-0"
-          />
-        </div>
+    <div
+      className="flex items-center justify-center min-h-screen px-6 py-12 bg-blue-300"
+      style={{ fontFamily: "Poppins, sans-serif" }}
+    >
+      <Toaster position="top-center" />
+      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-gray-800 text-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Bagian Kiri - Slide Show */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="md:w-1/2 p-10 bg-blue-200 flex flex-col justify-center items-center text-center relative"
+        >
+          <div className="absolute top-4 left-4">
+            <Image src="/logo_dkm_paramadina.png" alt="Logo DKM" width={80} height={40} />
+          </div>
 
-        {/* Bagian Kanan (Form) */}
-        <div className="md:w-1/2">
-          <h2 className="text-2xl font-bold mb-6 text-center md:text-left">
-            Formulir Pendaftaran
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <motion.div
+            key={slide}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="w-full flex flex-col justify-center items-center"
+          >
+            {slide === 0 ? (
+              <>
+                <Image src="/Ilustrasi_Isra_Miraj.png" alt="Isra Miraj" width={250} height={250} className="rounded-lg" />
+                <h2 className="text-3xl font-bold mb-3 text-gray-900 mt-4">Isra Miraj 1445H</h2>
+                <p className="text-gray-800 text-lg">Mari bersama meraih keberkahan dalam acara spesial ini. Daftar sekarang!</p>
+              </>
+            ) : (
+              <Image src="/logo_dkm_paramadina.png" alt="Logo Tengah" width={200} height={100} />
+            )}
+          </motion.div>
+        </motion.div>
+
+        {/* Bagian Kanan - Form */}
+        <motion.div
+          initial={{ x: 150, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="md:w-1/2 p-10"
+        >
+          <h2 className="text-3xl font-bold text-center mb-8">Form Pendaftaran</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
               name="nama"
               placeholder="Nama"
               value={formData.nama}
               onChange={handleChange}
-              className="w-full p-3 text-lg rounded-md bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 md:p-4 text-base md:text-lg rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
 
@@ -78,53 +132,57 @@ export default function FormPage() {
               placeholder="Prodi"
               value={formData.prodi}
               onChange={handleChange}
-              className="w-full p-3 text-lg rounded-md bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 md:p-4 text-base md:text-lg rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
 
-            <input
-              type="text"
-              name="nim"
-              placeholder="NIM"
-              value={formData.nim}
-              onChange={handleChange}
-              className="w-full p-3 text-lg rounded-md bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            {formData.status !== "Dosen" && (
+              <input
+                type="text"
+                name="nim"
+                placeholder="NIM"
+                value={formData.nim}
+                onChange={handleChange}
+                className="w-full p-2 md:p-4 text-base md:text-lg rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            )}
 
             <select
               name="status"
               value={formData.status}
               onChange={handleChange}
-              className="w-full p-3 text-lg rounded-md bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 md:p-4 text-base md:text-lg rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="">Pilih Status</option>
               <option value="Mahasiswa">Mahasiswa</option>
               <option value="Dosen">Dosen</option>
               <option value="Panitia">Panitia</option>
+              <option value="Anggota DKM">Anggota DKM</option>
             </select>
 
-            {formData.status === "Panitia" && (
+            {formData.status === "Mahasiswa" && (
               <input
                 type="text"
                 name="angkatan"
                 placeholder="Angkatan"
                 value={formData.angkatan}
                 onChange={handleChange}
-                className="w-full p-3 text-lg rounded-md bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 md:p-4 text-base md:text-lg rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             )}
 
-            <button
+            <motion.button
               type="submit"
-              className="w-full bg-blue-600 text-white p-3 text-lg rounded-md shadow-md hover:bg-blue-700 transition"
+              whileTap={{ scale: 0.95 }}
+              className="w-full bg-blue-600 text-white p-2 md:p-4 text-base md:text-lg rounded-lg shadow-md hover:bg-blue-700 transition"
             >
               Simpan
-            </button>
+            </motion.button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
