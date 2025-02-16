@@ -7,27 +7,21 @@ const prisma = new PrismaClient();
 // Konfigurasi Transporter Nodemailer
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === "true",
+  port: Number(process.env.SMTP_PORT), // Pastikan dalam bentuk angka
+  secure: process.env.SMTP_SECURE === "true", // Gunakan TLS jika perlu
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
 });
 
-export async function GET() {
-  try {
-    const users = await prisma.user.findMany();
-    return NextResponse.json(users);
-  } catch (error) {
-    return NextResponse.json({ error: "Gagal mengambil data" }, { status: 500 });
-  }
-}
-
 // Handler untuk metode POST
 export async function POST(req) {
   try {
+    console.log("API dipanggil...");
     const body = await req.json();
+    console.log("Data diterima:", body);
+
     const { nama, email, prodi, nim, status, angkatan, divisi, periode } = body;
 
     // Validasi input
@@ -41,28 +35,6 @@ export async function POST(req) {
     if (!email.includes("@")) {
       return NextResponse.json(
         { error: "Format email tidak valid." },
-        { status: 400 }
-      );
-    }
-
-    // Kondisional untuk status
-    if (status === "Mahasiswa" && !angkatan) {
-      return NextResponse.json(
-        { error: "Angkatan harus diisi untuk status Mahasiswa." },
-        { status: 400 }
-      );
-    }
-
-    if (status === "Panitia" && !divisi) {
-      return NextResponse.json(
-        { error: "Divisi harus diisi untuk status Panitia." },
-        { status: 400 }
-      );
-    }
-
-    if (status === "Anggota DKM" && !periode) {
-      return NextResponse.json(
-        { error: "Periode harus diisi untuk status Anggota DKM." },
         { status: 400 }
       );
     }
@@ -81,7 +53,9 @@ export async function POST(req) {
       },
     });
 
-    // Kirim email konfirmasi
+    console.log("Data berhasil disimpan:", newUser);
+
+    // Kirim email konfirmasi ke pengguna
     await transporter.sendMail({
       from: `"DKM Universitas Paramadina" <${process.env.SMTP_USER}>`,
       to: email,
@@ -105,17 +79,16 @@ export async function POST(req) {
       `,
     });
 
+    console.log("Email konfirmasi berhasil dikirim!");
+
     return NextResponse.json(
       { message: "Data berhasil disimpan & email terkirim!", user: newUser },
       { status: 201 }
     );
   } catch (error) {
-    console.error(error.message || error); // Tampilkan pesan kesalahan yang lebih aman
+    console.error("Error:", error);
     return NextResponse.json(
-      {
-        error: "Terjadi kesalahan server.",
-        details: error.message || "Tidak ada detail kesalahan", // Pastikan error.message ada
-      },
+      { error: "Terjadi kesalahan server.", details: error.message },
       { status: 500 }
     );
   }

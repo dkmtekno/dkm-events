@@ -14,13 +14,15 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
+  id       Int     @id @default(autoincrement())
   nama     String
+  email    String  @unique
   prodi    String
-  nim      String  @unique
+  nim      String? 
   status   String
-  angkatan String? // Hanya untuk Mahasiswa
-  divisi   String? // Hanya untuk Panitia
-  periode  String? // Hanya untuk Anggota DKM
+  angkatan String?
+  divisi   String?
+  periode  String?
+  createdAt DateTime @default(now())
 }
 
