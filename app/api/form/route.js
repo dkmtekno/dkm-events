@@ -109,7 +109,9 @@ export async function POST(req) {
               : ""
           }
           ${
-            status !== "Mahasiswa" && status !== "Dosen" && status != "Anggota DKM"
+            status !== "Mahasiswa" &&
+            status !== "Dosen" &&
+            status !== "Anggota DKM"
               ? `<li><strong>Divisi:</strong> ${divisi || "-"}</li>`
               : ""
           }
