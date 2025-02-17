@@ -14,9 +14,9 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(cuid())
   nama     String
-  email    String  @unique
+  email    String  
   prodi    String
   nim      String? 
   status   String

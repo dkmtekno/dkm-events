@@ -20,7 +20,10 @@ export async function GET() {
     const users = await prisma.user.findMany();
     return NextResponse.json(users);
   } catch (error) {
-    return NextResponse.json({ error: "Gagal mengambil data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Gagal mengambil data" },
+      { status: 500 }
+    );
   }
 }
 
@@ -88,16 +91,33 @@ export async function POST(req) {
       subject: "Konfirmasi Pendaftaran",
       html: `
         <h2>Halo, ${nama}!</h2>
-        <p>Terima kasih telah mendaftar sebagai <strong>${status}</strong> di DKM Paramadina.</p>
+        <p>Terima kasih telah mendaftar event Isra Miraj sebagai <strong>${status}</strong> di DKM Paramadina.</p>
         <p>Berikut detail pendaftaran Anda:</p>
         <ul>
           <li><strong>Nama:</strong> ${nama}</li>
           <li><strong>Prodi:</strong> ${prodi}</li>
-          <li><strong>NIM:</strong> ${nim || "-"}</li>
-          <li><strong>Status:</strong> ${status}</li>
-          <li><strong>Angkatan:</strong> ${angkatan || "-"}</li>
-          <li><strong>Divisi:</strong> ${divisi || "-"}</li>
-          <li><strong>Periode:</strong> ${periode || "-"}</li>
+          ${
+            status !== "Dosen"
+              ? `<li><strong>NIM:</strong> ${nim || "-"}</li>`
+              : ""
+          }
+          ${
+            status !== "Dosen" &&
+            status !== "Panitia" &&
+            status !== "Anggota DKM"
+              ? `<li><strong>Angkatan:</strong> ${angkatan || "-"}</li>`
+              : ""
+          }
+          ${
+            status !== "Mahasiswa" && status !== "Dosen"
+              ? `<li><strong>Divisi:</strong> ${divisi || "-"}</li>`
+              : ""
+          }
+          ${
+            status !== "Dosen" && status !== "Mahasiswa" && status !== "Panitia"
+              ? `<li><strong>Periode:</strong> ${periode || "-"}</li>`
+              : ""
+          }
         </ul>
         <p>Jika ada pertanyaan, silakan hubungi panitia.</p>
         <p>Salam,</p>
