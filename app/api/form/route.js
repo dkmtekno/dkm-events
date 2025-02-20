@@ -21,7 +21,7 @@ export async function GET() {
     return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
-      { error: "Gagal mengambil data" },
+      { error: "Gagal mengambil data", details: error.message },
       { status: 500 }
     );
   }
@@ -30,13 +30,21 @@ export async function GET() {
 // Handler untuk metode POST
 export async function POST(req) {
   try {
-    const body = await req.json();
+    const bodyText = await req.text();
+    if (!bodyText) {
+      return NextResponse.json(
+        { error: "Request body kosong." },
+        { status: 400 }
+      );
+    }
+
+    const body = JSON.parse(bodyText);
     const { nama, email, prodi, nim, status, angkatan, divisi, periode } = body;
 
     // Validasi input
-    if (!nama || !email || !prodi || !status) {
+    if (!nama || !email || !status) {
       return NextResponse.json(
-        { error: "Nama, Email, Prodi, dan Status wajib diisi." },
+        { error: "Nama, Email, dan Status wajib diisi." },
         { status: 400 }
       );
     }
@@ -48,7 +56,14 @@ export async function POST(req) {
       );
     }
 
-    // Kondisional untuk status
+    if (status !== "Umum" && !prodi) {
+      return NextResponse.json(
+        { error: "Prodi wajib diisi kecuali untuk status Umum." },
+        { status: 400 }
+      );
+    }
+
+    // Validasi tambahan
     if (status === "Mahasiswa" && !angkatan) {
       return NextResponse.json(
         { error: "Angkatan harus diisi untuk status Mahasiswa." },
@@ -63,29 +78,37 @@ export async function POST(req) {
       );
     }
 
-    if (status === "Anggota DKM" && !periode) {
+    if (status === "Pengurus DKM" && !periode) {
       return NextResponse.json(
-        { error: "Periode harus diisi untuk status Anggota DKM." },
+        { error: "Periode harus diisi untuk status Pengurus DKM." },
         { status: 400 }
       );
     }
 
     // Simpan data ke database dengan Prisma
+    // Simpan data ke database dengan Prisma
     const newUser = await prisma.user.create({
       data: {
         nama,
         email,
-        prodi,
+        prodi: status === "Umum" ? "-" : prodi, // Ganti null dengan "-"
         nim: nim || null,
         status,
         angkatan: status === "Mahasiswa" ? angkatan : null,
         divisi: status === "Panitia" ? divisi : null,
-        periode: status === "Anggota DKM" ? periode : null,
+        periode: status === "Pengurus DKM" ? periode : null,
       },
     });
 
+    if (!newUser) {
+      return NextResponse.json(
+        { error: "Gagal menyimpan data." },
+        { status: 500 }
+      );
+    }
+
     // Kirim email konfirmasi
-    await transporter.sendMail({
+    const emailContent = {
       from: `"DKM Universitas Paramadina" <${process.env.SMTP_USER}>`,
       to: email,
       subject: "Konfirmasi Pendaftaran",
@@ -95,28 +118,28 @@ export async function POST(req) {
         <p>Berikut detail pendaftaran Anda:</p>
         <ul>
           <li><strong>Nama:</strong> ${nama}</li>
-          <li><strong>Prodi:</strong> ${prodi}</li>
           ${
-            status !== "Dosen"
+            status !== "Umum"
+              ? `<li><strong>Prodi:</strong> ${prodi || "-"}</li>`
+              : ""
+          }
+          ${
+            status !== "Umum"
               ? `<li><strong>NIM:</strong> ${nim || "-"}</li>`
               : ""
           }
           ${
-            status !== "Dosen" &&
-            status !== "Panitia" &&
-            status !== "Anggota DKM"
+            status === "Mahasiswa"
               ? `<li><strong>Angkatan:</strong> ${angkatan || "-"}</li>`
               : ""
           }
           ${
-            status !== "Mahasiswa" &&
-            status !== "Dosen" &&
-            status !== "Anggota DKM"
+            status === "Panitia"
               ? `<li><strong>Divisi:</strong> ${divisi || "-"}</li>`
               : ""
           }
           ${
-            status !== "Dosen" && status !== "Mahasiswa" && status !== "Panitia"
+            status === "Pengurus DKM"
               ? `<li><strong>Periode:</strong> ${periode || "-"}</li>`
               : ""
           }
@@ -125,18 +148,20 @@ export async function POST(req) {
         <p>Salam,</p>
         <p><strong>DKM Universitas Paramadina</strong></p>
       `,
-    });
+    };
+
+    await transporter.sendMail(emailContent);
 
     return NextResponse.json(
       { message: "Data berhasil disimpan & email terkirim!", user: newUser },
       { status: 201 }
     );
   } catch (error) {
-    console.error(error.message || error); // Tampilkan pesan kesalahan yang lebih aman
+    console.error("Error terjadi:", error.message || error);
     return NextResponse.json(
       {
         error: "Terjadi kesalahan server.",
-        details: error.message || "Tidak ada detail kesalahan", // Pastikan error.message ada
+        details: error.message || "Tidak ada detail kesalahan",
       },
       { status: 500 }
     );

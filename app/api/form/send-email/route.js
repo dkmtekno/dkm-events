@@ -49,7 +49,7 @@ export async function POST(req) {
         status,
         angkatan: status === "Mahasiswa" ? angkatan : null,
         divisi: status === "Panitia" ? divisi : null,
-        periode: status === "Anggota DKM" ? periode : null,
+        periode: status === "Pengurus DKM" ? periode : null,
       },
     });
 

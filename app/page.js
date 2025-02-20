@@ -36,10 +36,11 @@ export default function FormPage() {
       [name]: value,
       ...(name === "status"
         ? {
-            nim: value === "Dosen" ? "" : prev.nim,
+            nim: value === "Umum" ? "" : prev.nim,
+            prodi: value === "Umum" ? "" : prev.prodi, // Tambahkan ini
             angkatan: value === "Mahasiswa" ? prev.angkatan : "",
             divisi: value === "Panitia" ? "" : prev.divisi,
-            periode: value === "Anggota DKM" ? "" : prev.periode,
+            periode: value === "Pengurus DKM" ? "2025/2026" : "",
           }
         : {}),
     }));
@@ -144,7 +145,9 @@ export default function FormPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 2, ease: "easeInOut" }} // Slow transition for opacity
         >
-          <h2 className="text-3xl font-bold text-center mb-8">Form Pendaftaran</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Form Pendaftaran
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
@@ -155,16 +158,33 @@ export default function FormPage() {
               className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
               required
             />
-            <input
-              type="text"
-              name="prodi"
-              placeholder="Prodi"
-              value={formData.prodi}
-              onChange={handleChange}
-              className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-              required
-            />
-            {formData.status !== "Dosen" && (
+            {formData.status !== "Umum" && (
+              <select
+                name="prodi"
+                value={formData.prodi}
+                onChange={handleChange}
+                className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
+                required
+              >
+                <option value="">Pilih Program Studi</option>
+                <option value="Manajemen dan Bisnis">
+                  Manajemen dan Bisnis
+                </option>
+                <option value="Desain Komunikasi Visual">
+                  Desain Komunikasi Visual
+                </option>
+                <option value="Teknik Informatika">Teknik Informatika</option>
+                <option value="Desain Produk">Desain Produk</option>
+                <option value="Falsafah dan Agama">Falsafah dan Agama</option>
+                <option value="Hubungan Internasional">
+                  Hubungan Internasional
+                </option>
+                <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
+                <option value="Psikologi">Psikologi</option>
+              </select>
+            )}
+
+            {formData.status !== "Umum" && (
               <input
                 type="text"
                 name="nim"
@@ -172,7 +192,7 @@ export default function FormPage() {
                 value={formData.nim}
                 onChange={handleChange}
                 className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-                required={formData.status !== "Dosen"}
+                required={formData.status !== "Umum"}
               />
             )}
             <input
@@ -193,9 +213,9 @@ export default function FormPage() {
             >
               <option value="">Pilih Status</option>
               <option value="Mahasiswa">Mahasiswa</option>
-              <option value="Dosen">Dosen</option>
+              <option value="Umum">Umum</option>
               <option value="Panitia">Panitia</option>
-              <option value="Anggota DKM">Anggota DKM</option>
+              <option value="Pengurus DKM">Pengurus DKM</option>
             </select>
             {formData.status === "Mahasiswa" && (
               <input
@@ -219,7 +239,7 @@ export default function FormPage() {
                 required
               />
             )}
-            {formData.status === "Anggota DKM" && (
+            {formData.status === "Pengurus DKM" && (
               <input
                 type="text"
                 name="periode"
