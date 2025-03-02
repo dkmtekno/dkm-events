@@ -35,8 +35,8 @@ export default function DaftarKehadiran() {
             title: "Password Salah!",
             text: "Silakan coba lagi.",
             customClass: {
-              confirmButton: 'bg-blue-600 text-white', 
-              cancelButton: 'bg-gray-400 text-white'  
+              confirmButton: "bg-blue-600 text-white",
+              cancelButton: "bg-gray-400 text-white",
             },
           }).then(() => {
             window.location.href = "/";
@@ -44,20 +44,26 @@ export default function DaftarKehadiran() {
         }
       },
       customClass: {
-        confirmButton: 'bg-[#0066ff] text-white', 
-        cancelButton: 'bg-gray-400 text-white', 
-      }
+        confirmButton: "bg-[#0066ff] text-white",
+        cancelButton: "bg-gray-400 text-white",
+      },
     });
   }, []);
-  
 
   const fetchData = async () => {
     try {
       const response = await fetch("/api/form");
       if (!response.ok) throw new Error("Gagal mengambil data");
+
       const data = await response.json();
-      setUsers(data);
-      setFilteredUsers(data);
+
+      // Hilangkan duplikasi berdasarkan 'nim' (bisa disesuaikan dengan field unik lainnya)
+      const uniqueUsers = Array.from(
+        new Map(data.map((user) => [user.nim, user])).values()
+      );
+
+      setUsers(uniqueUsers);
+      setFilteredUsers(uniqueUsers);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -66,6 +72,7 @@ export default function DaftarKehadiran() {
       });
     }
   };
+  
 
   useEffect(() => {
     filterData();
@@ -123,7 +130,9 @@ export default function DaftarKehadiran() {
               setFilters((prev) => ({ ...prev, [filterKey]: e.target.value }))
             }
           >
-            <option value="">Filter {filterKey.charAt(0).toUpperCase() + filterKey.slice(1)}</option>
+            <option value="">
+              Filter {filterKey.charAt(0).toUpperCase() + filterKey.slice(1)}
+            </option>
             {[...new Set(users.map((u) => u[filterKey]).filter(Boolean))].map(
               (value) => (
                 <option key={value} value={value}>
@@ -146,12 +155,28 @@ export default function DaftarKehadiran() {
       </div>
 
       {/* Tabel Data */}
+      {/* Tabel Data */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300 mt-4 text-sm sm:text-base">
           <thead>
             <tr className="bg-gray-200">
-              {["Nama", "Prodi", "NIM", "Status", "Angkatan", "Divisi", "Periode"].map((header) => (
-                <th key={header} className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+              <th className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                No
+              </th>{" "}
+              {/* Tambahkan kolom No */}
+              {[
+                "Nama",
+                "Prodi",
+                "NIM",
+                "Status",
+                "Angkatan",
+                "Divisi",
+                "Periode",
+              ].map((header) => (
+                <th
+                  key={header}
+                  className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2"
+                >
                   {header}
                 </th>
               ))}
@@ -159,20 +184,41 @@ export default function DaftarKehadiran() {
           </thead>
           <tbody>
             {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
+              filteredUsers.map((user, index) => (
                 <tr key={user.id} className="hover:bg-gray-100">
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.nama}</td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.prodi}</td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.nim}</td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.status}</td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.angkatan || "-"}</td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.divisi || "-"}</td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">{user.periode || "-"}</td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2 text-center">
+                    {index + 1}
+                  </td>{" "}
+                  {/* Tambahkan nomor urut */}
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.nama}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.prodi}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.nim}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.status}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.angkatan || "-"}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.divisi || "-"}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                    {user.periode || "-"}
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="text-center border border-gray-300 px-4 py-2">
+                <td
+                  colSpan="8"
+                  className="text-center border border-gray-300 px-4 py-2"
+                >
                   Tidak ada data
                 </td>
               </tr>
