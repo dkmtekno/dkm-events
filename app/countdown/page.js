@@ -45,8 +45,8 @@
         transition={{ duration: 0.5 }}
         className="flex flex-col items-center justify-center h-screen bg-blue-400 text-dark p-4 text-center"
       >
-        <h1 className="text-3xl md:text-4xl font-bold">Selamat datang {role}!</h1>
-        <p className="text-xl md:text-2xl mt-2">Lorem Ipsum..</p>
+        <h1 className="text-3xl md:text-4xl font-bold">Anda sebagai {role}!</h1>
+        <p className="text-xl md:text-2xl mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         
         <div className="flex space-x-2 md:space-x-4 mt-4 text-4xl md:text-6xl font-bold">
           <div className="bg-blue-200 px-4 py-2 md:px-6 md:py-2 rounded-lg">{String(timeLeft.hours).padStart(2, '0')}</div>
