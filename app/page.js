@@ -113,19 +113,18 @@ export default function FormPage() {
           >
             {slide === 0 ? (
               <>
-                <Image
+                {/* <Image
                   src="/Ilustrasi_Isra_Miraj.png"
                   alt="Isra Miraj"
                   width={250}
                   height={250}
                   className="rounded-lg"
-                />
+                /> */}
                 <h2 className="text-3xl font-bold mb-3 text-gray-900 mt-4">
-                  Isra Miraj 1445H
+                  Buka Bersama DKM Paramadina
                 </h2>
                 <p className="text-gray-800 text-lg">
-                  Mari bersama meraih keberkahan dalam acara spesial ini. Daftar
-                  sekarang!
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                 </p>
               </>
             ) : (
