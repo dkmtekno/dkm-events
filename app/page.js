@@ -1,265 +1,100 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { toast, Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
-export default function FormPage() {
-  const [formData, setFormData] = useState({
-    nama: "",
-    prodi: "",
-    nim: "",
-    email: "",
-    status: "",
-    angkatan: "",
-    divisi: "",
-    periode: "",
-  });
+export default function LoginPage() {
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const [slide, setSlide] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
+  return (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex min-h-screen items-center justify-center bg-gradient-to-b from-blue-500 to-blue-400 px-6 sm:px-14"
+    >
+      <div className="bg-white p-8 sm:p-14 rounded-2xl shadow-lg w-full max-w-2xl text-left">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <Image src="/logo_dkm_paramadina.png" alt="Logo" width={160} height={50} />
+        </div>
 
-  // Slide effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSlide((prev) => (prev === 0 ? 1 : 0));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+        <h1 className="text-2xl font-bold mt-6 text-center">Selamat Datang</h1>
+        <p className="text-gray-600 text-center">Pilih role untuk masuk</p>
 
-  // Handle form input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      ...(name === "status"
-        ? {
-            nim: value === "Umum" ? "" : prev.nim,
-            prodi: value === "Umum" ? "" : prev.prodi, // Tambahkan ini
-            angkatan: value === "Mahasiswa" ? prev.angkatan : "",
-            divisi: value === "Panitia" ? "" : prev.divisi,
-            periode: value === "Pengurus DKM" ? "2025/2026" : "",
-          }
-        : {}),
-    }));
-  };
+        {/* Pilihan Login */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 mt-8">
+          <LoginCard title="Mahasiswa" icon="🎓" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Dosen" icon="🧑‍🏫" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Pengurus DKM" icon="🕌" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Umum" icon="🌎" setIsTransitioning={setIsTransitioning} />
+        </div>
 
-  // Submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitted(true);
+        {/* Footer */}
+        <p className="text-gray-500 text-sm mt-8 text-center">
+          © DKM Paramadina 2025. Hak Cipta Dilindungi.
+          <br />
+          <a href="#" className="text-blue-600 underline text-center">
+            Powered by DKM Paramadina.
+          </a>
+        </p>
+      </div>
 
-    try {
-      const res = await fetch("/api/form", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      {/* 🔥 Overlay "Mengarahkan..." Fullscreen & Tengah 🔥 */}
+      {isTransitioning && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 flex items-center justify-center bg-white z-50 w-screen h-screen"
+        >
+          <motion.div 
+            initial={{ scale: 1 }}
+            animate={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl md:text-4xl font-bold text-blue-600"
+          >
+            Mengarahkan...
+          </motion.div>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+}
 
-      const data = await res.json();
+// 🔹 Komponen Kartu Login
+function LoginCard({ title, icon, setIsTransitioning }) {
+  const router = useRouter();
 
-      if (res.ok) {
-        toast.success("Pendaftaran berhasil! Email konfirmasi terkirim.");
-        setFormData({
-          nama: "",
-          prodi: "",
-          nim: "",
-          email: "",
-          status: "",
-          angkatan: "",
-          divisi: "",
-          periode: "",
-        });
-        setTimeout(() => setSubmitted(false), 2000);
-      } else {
-        toast.error(data.error || "Terjadi kesalahan.");
-        setSubmitted(false);
-      }
-    } catch (error) {
-      toast.error("Gagal mengirim permintaan.");
-      setSubmitted(false);
-    }
+  const handleClick = () => {
+    setIsTransitioning(true);
+    sessionStorage.setItem("role", title);
+    
+    setTimeout(() => {
+      router.push("/countdown");
+    }, 500);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-6 py-12 bg-blue-300">
-      <Toaster position="top-center" />
-      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-gray-800 text-white rounded-2xl shadow-xl overflow-hidden">
-        <motion.div
-          className="md:w-1/2 p-10 bg-blue-200 flex flex-col justify-center items-center text-center relative"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, ease: "easeInOut" }} // Slow transition for opacity
-        >
-          <div className="absolute top-4 left-4">
-            <Image
-              src="/logo_dkm_paramadina.png"
-              alt="Logo DKM"
-              width={80}
-              height={40}
-            />
-          </div>
-          <motion.div
-            key={slide}
-            className="w-full flex flex-col justify-center items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 2, // Slow transition for opacity change
-              ease: "easeInOut",
-            }}
-          >
-            {slide === 0 ? (
-              <>
-                {/* <Image
-                  src="/Ilustrasi_Isra_Miraj.png"
-                  alt="Isra Miraj"
-                  width={250}
-                  height={250}
-                  className="rounded-lg"
-                /> */}
-                <h2 className="text-3xl font-bold mb-3 text-gray-900 mt-4">
-                  Buka Bersama DKM Paramadina
-                </h2>
-                <p className="text-gray-800 text-lg">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                </p>
-              </>
-            ) : (
-              <Image
-                src="/logo_dkm_paramadina.png"
-                alt="Logo Tengah"
-                width={200}
-                height={100}
-              />
-            )}
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="md:w-1/2 p-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, ease: "easeInOut" }} // Slow transition for opacity
-        >
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Form Pendaftaran
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              name="nama"
-              placeholder="Nama"
-              value={formData.nama}
-              onChange={handleChange}
-              className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-              required
-            />
-            {formData.status !== "Umum" && (
-              <select
-                name="prodi"
-                value={formData.prodi}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-                required
-              >
-                <option value="">Pilih Program Studi</option>
-                <option value="Manajemen dan Bisnis">
-                  Manajemen dan Bisnis
-                </option>
-                <option value="Desain Komunikasi Visual">
-                  Desain Komunikasi Visual
-                </option>
-                <option value="Teknik Informatika">Teknik Informatika</option>
-                <option value="Desain Produk">Desain Produk</option>
-                <option value="Falsafah dan Agama">Falsafah dan Agama</option>
-                <option value="Hubungan Internasional">
-                  Hubungan Internasional
-                </option>
-                <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
-                <option value="Psikologi">Psikologi</option>
-              </select>
-            )}
-
-            {formData.status !== "Umum" && (
-              <input
-                type="text"
-                name="nim"
-                placeholder="NIM"
-                value={formData.nim}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-                required={formData.status !== "Umum"}
-              />
-            )}
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-              required
-            />
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-              required
-            >
-              <option value="">Pilih Status</option>
-              <option value="Mahasiswa">Mahasiswa</option>
-              <option value="Umum">Umum</option>
-              <option value="Panitia">Panitia</option>
-              <option value="Pengurus DKM">Pengurus DKM</option>
-            </select>
-            {formData.status === "Mahasiswa" && (
-              <input
-                type="text"
-                name="angkatan"
-                placeholder="Angkatan"
-                value={formData.angkatan}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-                required
-              />
-            )}
-            {formData.status === "Panitia" && (
-              <input
-                type="text"
-                name="divisi"
-                placeholder="Divisi"
-                value={formData.divisi}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-                required
-              />
-            )}
-            {formData.status === "Pengurus DKM" && (
-              <input
-                type="text"
-                name="periode"
-                placeholder="Periode"
-                value={formData.periode}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-700 border border-gray-600"
-                required
-              />
-            )}
-            <motion.button
-              type="submit"
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.3, ease: "easeOut" }} // Smooth and slow tap effect
-              className="w-full bg-blue-600 text-white p-4 rounded-lg"
-            >
-              {submitted ? "Terkirim ✅" : "Simpan"}
-            </motion.button>
-          </form>
-        </motion.div>
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={handleClick}
+      className="flex items-center gap-4 p-5 sm:p-6 border rounded-lg shadow-sm bg-blue-50 border-blue-300 hover:bg-blue-100 transition duration-300 cursor-pointer w-full flex-wrap"
+    >
+      {/* Ikon (Bulat Sempurna) */}
+      <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-blue-200 rounded-full">
+        <span className="text-blue-600 text-2xl sm:text-3xl">{icon}</span>
       </div>
-    </div>
+
+      {/* Teks agar tidak keluar dari kotak */}
+      <div className="flex-1 min-w-0">
+        <p className="text-gray-500 text-xs sm:text-sm">Saya Seorang</p>
+        <p className="text-blue-600 font-bold text-md sm:text-lg break-words whitespace-normal">
+          {title}
+        </p>
+      </div>
+    </motion.div>
   );
 }

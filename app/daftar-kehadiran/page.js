@@ -40,7 +40,7 @@ export default function DaftarKehadiran() {
               cancelButton: "bg-gray-400 text-white",
             },
           }).then(() => {
-            window.location.href = "/";
+            window.location.href = "/regristrasi";
           });
         }
       },
