@@ -96,14 +96,23 @@ export default function DaftarKehadiran() {
     const worksheet = XLSX.utils.json_to_sheet(filteredUsers);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Kehadiran");
-    XLSX.writeFile(workbook, "Daftar_Kehadiran.xlsx");
-
+  
+    // Ambil tanggal dan waktu saat ini
+    const now = new Date();
+    const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}_${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+  
+    // Buat nama file dengan format "Daftar_Kehadiran-YYYYMMDD_HHMM.xlsx"
+    const fileName = `Daftar_Kehadiran-${timestamp}.xlsx`;
+  
+    XLSX.writeFile(workbook, fileName);
+  
     Swal.fire({
       icon: "success",
       title: "Berhasil Mengunduh!",
-      text: "File Excel telah diunduh.",
+      text: `File ${fileName} telah diunduh.`,
     });
   };
+  
 
   if (!isAuthorized) return null;
 
