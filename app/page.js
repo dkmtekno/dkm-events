@@ -72,7 +72,7 @@ function LoginCard({ title, icon, setIsTransitioning }) {
     sessionStorage.setItem("role", title);
     
     setTimeout(() => {
-      router.push("/countdown");
+      router.push("/regristrasi");
     }, 500);
   };
 

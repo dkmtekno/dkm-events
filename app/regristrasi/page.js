@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast, Toaster } from "react-hot-toast";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function FormPage() {
   const [formData, setFormData] = useState({
@@ -47,19 +48,20 @@ export default function FormPage() {
   };
 
   // Submit form
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-
+  
     try {
       const res = await fetch("/api/form", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
+  
       const data = await res.json();
-
+  
       if (res.ok) {
         toast.success("Pendaftaran berhasil! Email konfirmasi terkirim.");
         setFormData({
@@ -72,7 +74,11 @@ export default function FormPage() {
           divisi: "",
           periode: "",
         });
-        setTimeout(() => setSubmitted(false), 2000);
+  
+        setTimeout(() => {
+          setSubmitted(false);
+          router.push("/countdown"); // Redirect ke halaman countdown setelah 2 detik
+        }, 2000);
       } else {
         toast.error(data.error || "Terjadi kesalahan.");
         setSubmitted(false);

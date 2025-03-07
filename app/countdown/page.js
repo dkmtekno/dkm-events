@@ -1,67 +1,73 @@
-  'use client';
+"use client";
 
-  import { useState, useEffect } from 'react';
-  import { useRouter } from 'next/navigation';
-  import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
-  export default function CountdownTimer() {
-    const [timeLeft, setTimeLeft] = useState({ hours: 2, minutes: 10, seconds: 13 });
-    const [role, setRole] = useState("Pengguna");
-    const router = useRouter();
+export default function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState(120);
+  const [audioAllowed, setAudioAllowed] = useState(false);
+  const [notificationAllowed, setNotificationAllowed] = useState(false);
 
-    useEffect(() => {
-      // Ambil role dari sessionStorage
-      const storedRole = sessionStorage.getItem("role");
-      if (storedRole) setRole(storedRole);
+  useEffect(() => {
+    if (Notification.permission === "granted") {
+      setNotificationAllowed(true);
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          setNotificationAllowed(true);
+        }
+      });
+    }
 
-      const interval = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          let { hours, minutes, seconds } = prevTime;
-          
-          if (seconds > 0) {
-            seconds -= 1;
-          } else {
-            if (minutes > 0) {
-              minutes -= 1;
-              seconds = 59;
-            } else if (hours > 0) {
-              hours -= 1;
-              minutes = 59;
-              seconds = 59;
-            }
-          }
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
 
-          return { hours, minutes, seconds };
+    const timeout = setTimeout(() => {
+      if (audioAllowed) {
+        const audio = new Audio("/adzan.mp3");
+        audio.play().catch(err => console.error("Gagal memutar adzan:", err));
+      }
+
+      if (notificationAllowed) {
+        new Notification("Waktunya Berbuka!", {
+          body: "Selamat Berbuka Puasa! Semoga puasamu diterima.",
+          icon: "/logo_dkm_paramadina.png",
         });
-      }, 1000);
+      }
+    }, 120000);
 
-      return () => clearInterval(interval);
-    }, []);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [audioAllowed, notificationAllowed]);
 
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col items-center justify-center h-screen bg-blue-400 text-dark p-4 text-center"
-      >
-        <h1 className="text-3xl md:text-4xl font-bold">Anda sebagai {role}!</h1>
-        <p className="text-xl md:text-2xl mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        
-        <div className="flex space-x-2 md:space-x-4 mt-4 text-4xl md:text-6xl font-bold">
-          <div className="bg-blue-200 px-4 py-2 md:px-6 md:py-2 rounded-lg">{String(timeLeft.hours).padStart(2, '0')}</div>
-          <span>:</span>
-          <div className="bg-blue-200 px-4 py-2 md:px-6 md:py-2 rounded-lg">{String(timeLeft.minutes).padStart(2, '0')}</div>
-          <span>:</span>
-          <div className="bg-blue-200 px-4 py-2 md:px-6 md:py-2 rounded-lg">{String(timeLeft.seconds).padStart(2, '0')}</div>
-        </div>
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 text-center relative">
+      <div className="absolute top-0 left-0 w-full h-full bg-[url('/mosque-bg.png')] bg-cover bg-center opacity-20"></div>
+      
+      <h1 className="text-4xl font-extrabold drop-shadow-lg">Undangan Buka Bersama</h1>
+      <div className="mt-4 p-4 bg-white text-black rounded-xl shadow-lg w-80 text-center">
+        <p className="text-lg font-semibold">📅 Tanggal: <span className="text-blue-600">15 Maret 2025</span></p>
+        <p className="text-lg font-semibold">⏰ Waktu: <span className="text-blue-600">18:00 WIB</span></p>
+        <p className="text-lg font-semibold">📍 Lokasi: <span className="text-blue-600">Masjid DKM Paramadina</span></p>
+      </div>
+      
+      <h2 className="text-3xl font-bold mt-6 drop-shadow-md">Hitung Mundur Berbuka Puasa</h2>
+      <div className="flex space-x-4 mt-4 text-5xl font-extrabold bg-white text-blue-600 px-6 py-3 rounded-lg shadow-lg">
+        <div>{String(Math.floor(timeLeft / 60)).padStart(2, '0')}</div>
+        <span>:</span>
+        <div>{String(timeLeft % 60).padStart(2, '0')}</div>
+      </div>
 
+      {!audioAllowed && (
         <button 
-          onClick={() => router.push('/regristrasi')} 
-          className="mt-6 bg-white text-blue-700 font-bold py-2 px-6 rounded-lg shadow-md transition transform hover:scale-95 active:scale-90 hover:bg-blue-700 hover:text-white"
+          onClick={() => setAudioAllowed(true)} 
+          className="mt-6 bg-green-500 text-white py-3 px-8 rounded-lg shadow-lg text-lg font-semibold hover:scale-105 transition transform"
         >
-          Selanjutnya
+          Aktifkan Adzan
         </button>
-      </motion.div>
-    );
-  }
+      )}
+    </div>
+  );
+}
