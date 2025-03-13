@@ -137,21 +137,21 @@ export default function FormPage() {
                   alt="Isra Miraj"
                   width={700}
                   height={700}
-                  className="rounded-lg w-full h-"
+                  className="rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl h-auto"
                 />
-                <h6 className="text-2xl font-bold mb-3 text-gray-900 mt-4">
+                <h6 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900 mt-4 text-center">
                   Melangkah Bersama Cahaya Quran
                 </h6>
-                <p className="text-gray-500 text-sm text-center">
+                <p className="text-gray-500 text-sm sm:text-base text-center">
                   NAEEMA DKM Paramadina
                 </p>
               </>
             ) : (
               <>
-                <h2 className="text-3xl font-bold mb-3 text-gray-900 mt-4">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-gray-900 mt-4 text-center">
                   Buka Bersama DKM Paramadina
                 </h2>
-                <p className="text-gray-800 text-lg">
+                <p className="text-gray-700 text-sm sm:text-base md:text-lg text-center">
                   Melangkah Bersama Cahaya Quran adalah acara buka bersama yang
                   mengajak peserta untuk memperdalam pemahaman Al-Quran dan
                   mempererat ukhuwah di bulan Ramadan.
