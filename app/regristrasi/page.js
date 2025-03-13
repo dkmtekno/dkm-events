@@ -133,8 +133,8 @@ export default function FormPage() {
             {slide === 0 ? (
               <>
                 <Image
-                  src="/Ilustrasi_Bukber.png"
-                  alt="Isra Miraj"
+                  src="/ilustrasi_bukber.png"
+                  alt="Buka Bersama"
                   width={700}
                   height={700}
                   className="rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl h-auto"
