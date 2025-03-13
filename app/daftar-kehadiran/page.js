@@ -25,6 +25,8 @@ export default function DaftarKehadiran() {
       showCancelButton: true,
       confirmButtonText: "Masuk",
       cancelButtonText: "Batal",
+      confirmButtonColor: "#4ea8de", // Warna biru muda
+      cancelButtonColor: "#d33", // Warna merah untuk "Batal"
       inputAttributes: { autocapitalize: "off" },
       preConfirm: (password) => {
         if (password === "naeemadkmparamadina") {
@@ -35,21 +37,14 @@ export default function DaftarKehadiran() {
             icon: "error",
             title: "Password Salah!",
             text: "Silakan coba lagi.",
-            customClass: {
-              confirmButton: "bg-blue-600 text-white",
-              cancelButton: "bg-gray-400 text-white",
-            },
           }).then(() => {
             window.location.href = "/regristrasi";
           });
         }
       },
-      customClass: {
-        confirmButton: "bg-[#0066ff] text-white",
-        cancelButton: "bg-gray-400 text-white",
-      },
     });
   }, []);
+  
 
   const fetchData = async () => {
     try {
@@ -57,8 +52,6 @@ export default function DaftarKehadiran() {
       if (!response.ok) throw new Error("Gagal mengambil data");
 
       const data = await response.json();
-
-      // Hilangkan duplikasi berdasarkan 'nim' (bisa disesuaikan dengan field unik lainnya)
       const uniqueUsers = Array.from(
         new Map(data.map((user) => [user.nim, user])).values()
       );
@@ -97,7 +90,6 @@ export default function DaftarKehadiran() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Kehadiran");
 
-    // Ambil tanggal dan waktu saat ini
     const now = new Date();
     const timestamp = `${now.getFullYear()}${String(
       now.getMonth() + 1
@@ -105,7 +97,6 @@ export default function DaftarKehadiran() {
       now.getHours()
     ).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
 
-    // Buat nama file dengan format "Daftar_Kehadiran-YYYYMMDD_HHMM.xlsx"
     const fileName = `Daftar_Kehadiran-${timestamp}.xlsx`;
 
     XLSX.writeFile(workbook, fileName);
@@ -115,6 +106,42 @@ export default function DaftarKehadiran() {
       title: "Berhasil Mengunduh!",
       text: `File ${fileName} telah diunduh.`,
     });
+  };
+
+  const updateAttendance = async (nim, kehadiran) => {
+    try {
+      const response = await fetch("/api/updateAttendance", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nim, kehadiran }),
+      });
+
+      if (!response.ok) throw new Error("Gagal memperbarui kehadiran");
+
+      const updatedUser = await response.json();
+
+      setUsers((prev) =>
+        prev.map((user) => (user.nim === nim ? { ...user, kehadiran } : user))
+      );
+      setFilteredUsers((prev) =>
+        prev.map((user) => (user.nim === nim ? { ...user, kehadiran } : user))
+      );
+
+      // Notifikasi sukses
+      Swal.fire({
+        icon: "success",
+        title: "Kehadiran diperbarui!",
+        text: `Kehadiran ${updatedUser.nama} berhasil diubah.`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Gagal memperbarui kehadiran.",
+      });
+    }
   };
 
   if (!isAuthorized) return null;
@@ -167,15 +194,11 @@ export default function DaftarKehadiran() {
       </div>
 
       {/* Tabel Data */}
-      {/* Tabel Data */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 mt-4 text-sm sm:text-base">
+        <table className="w-full border-collapse border border-blue-300 mt-4 text-sm sm:text-base">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
-                No
-              </th>{" "}
-              {/* Tambahkan kolom No */}
+            <tr className="bg-blue-200">
+              <th className="border border-blue-300 px-4 py-2">No</th>
               {[
                 "Nama",
                 "Prodi",
@@ -184,11 +207,9 @@ export default function DaftarKehadiran() {
                 "Angkatan",
                 "Divisi",
                 "Periode",
+                "Kehadiran",
               ].map((header) => (
-                <th
-                  key={header}
-                  className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2"
-                >
+                <th key={header} className="border border-blue-300 px-4 py-2">
                   {header}
                 </th>
               ))}
@@ -197,39 +218,48 @@ export default function DaftarKehadiran() {
           <tbody>
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
-                <tr key={user.id} className="hover:bg-gray-100">
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2 text-center">
+                <tr key={user.id} className="hover:bg-blue-100">
+                  <td className="border border-blue-300 px-4 py-2 text-center">
                     {index + 1}
-                  </td>{" "}
-                  {/* Tambahkan nomor urut */}
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  </td>
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.nama}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.prodi}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.nim}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.status}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.angkatan || "-"}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.divisi || "-"}
                   </td>
-                  <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2">
+                  <td className="border border-blue-300 px-4 py-2">
                     {user.periode || "-"}
+                  </td>
+                  <td className="border border-blue-300 px-4 py-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={user.kehadiran}
+                      onChange={(e) =>
+                        updateAttendance(user.nim, e.target.checked)
+                      }
+                      className="w-5 h-5"
+                    />
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td
-                  colSpan="8"
-                  className="text-center border border-gray-300 px-4 py-2"
+                  colSpan="9"
+                  className="text-center border border-blue-300 px-4 py-2"
                 >
                   Tidak ada data
                 </td>

@@ -17,32 +17,66 @@ export default function LoginPage() {
     >
       <div className="bg-white p-8 sm:p-14 rounded-2xl shadow-lg w-full max-w-2xl text-left">
         {/* Logo */}
-        <div className="flex justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-center"
+        >
           <Image src="/logo_dkm_paramadina.png" alt="Logo" width={160} height={50} />
-        </div>
+        </motion.div>
 
-        <h1 className="text-2xl font-bold mt-6 text-center">Selamat Datang</h1>
-        <p className="text-gray-600 text-center">Pilih role untuk masuk</p>
+        {/* Selamat Datang */}
+        <motion.h1 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-2xl font-bold mt-6 text-center"
+        >
+          Selamat Datang
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="text-gray-600 text-center"
+        >
+          Pilih role untuk masuk
+        </motion.p>
 
         {/* Pilihan Login */}
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 mt-8">
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.3 } }
+          }}
+          className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 mt-8"
+        >
           <LoginCard title="Mahasiswa" icon="🎓" setIsTransitioning={setIsTransitioning} />
           <LoginCard title="Dosen" icon="🧑‍🏫" setIsTransitioning={setIsTransitioning} />
           <LoginCard title="Pengurus DKM" icon="🕌" setIsTransitioning={setIsTransitioning} />
           <LoginCard title="Umum" icon="🌎" setIsTransitioning={setIsTransitioning} />
-        </div>
+        </motion.div>
 
         {/* Footer */}
-        <p className="text-gray-500 text-sm mt-8 text-center">
+        <motion.p 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.5 }}
+          className="text-gray-500 text-sm mt-8 text-center"
+        >
           © DKM Paramadina 2025. Hak Cipta Dilindungi.
           <br />
           <a href="#" className="text-blue-600 underline text-center">
             Powered by DKM Paramadina.
           </a>
-        </p>
+        </motion.p>
       </div>
 
-      {/* 🔥 Overlay "Mengarahkan..." Fullscreen & Tengah 🔥 */}
+      {/* Overlay "Mengarahkan..." */}
       {isTransitioning && (
         <motion.div 
           initial={{ opacity: 0 }}
@@ -63,7 +97,7 @@ export default function LoginPage() {
   );
 }
 
-// 🔹 Komponen Kartu Login
+// Komponen Kartu Login
 function LoginCard({ title, icon, setIsTransitioning }) {
   const router = useRouter();
 
@@ -78,17 +112,17 @@ function LoginCard({ title, icon, setIsTransitioning }) {
 
   return (
     <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.9 }}
       onClick={handleClick}
       className="flex items-center gap-4 p-5 sm:p-6 border rounded-lg shadow-sm bg-blue-50 border-blue-300 hover:bg-blue-100 transition duration-300 cursor-pointer w-full flex-wrap"
     >
-      {/* Ikon (Bulat Sempurna) */}
       <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center bg-blue-200 rounded-full">
         <span className="text-blue-600 text-2xl sm:text-3xl">{icon}</span>
       </div>
-
-      {/* Teks agar tidak keluar dari kotak */}
       <div className="flex-1 min-w-0">
         <p className="text-gray-500 text-xs sm:text-sm">Saya Seorang</p>
         <p className="text-blue-600 font-bold text-md sm:text-lg break-words whitespace-normal">

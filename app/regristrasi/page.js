@@ -52,16 +52,29 @@ export default function FormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-  
+
     try {
+      // Cek apakah NIM sudah ada di database
+      if (formData.nim) {
+        const checkRes = await fetch(`/api/checkNIM?nim=${formData.nim}`);
+        const checkData = await checkRes.json();
+
+        if (checkData.exists) {
+          toast.error("NIM sudah terdaftar! Gunakan NIM lain.");
+          setSubmitted(false);
+          return; // Hentikan proses jika NIM sudah ada
+        }
+      }
+
+      // Jika NIM belum ada, lanjutkan proses submit
       const res = await fetch("/api/form", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-  
+
       const data = await res.json();
-  
+
       if (res.ok) {
         toast.success("Pendaftaran berhasil! Email konfirmasi terkirim.");
         setFormData({
@@ -74,10 +87,10 @@ export default function FormPage() {
           divisi: "",
           periode: "",
         });
-  
+
         setTimeout(() => {
           setSubmitted(false);
-          router.push("/countdown"); // Redirect ke halaman countdown setelah 2 detik
+          router.push("/countdown");
         }, 2000);
       } else {
         toast.error(data.error || "Terjadi kesalahan.");
@@ -119,27 +132,31 @@ export default function FormPage() {
           >
             {slide === 0 ? (
               <>
-                {/* <Image
-                  src="/Ilustrasi_Isra_Miraj.png"
+                <Image
+                  src="/Ilustrasi_Bukber.png"
                   alt="Isra Miraj"
-                  width={250}
-                  height={250}
-                  className="rounded-lg"
-                /> */}
+                  width={700}
+                  height={700}
+                  className="rounded-lg w-full h-"
+                />
+                <h6 className="text-2xl font-bold mb-3 text-gray-900 mt-4">
+                  Melangkah Bersama Cahaya Quran
+                </h6>
+                <p className="text-gray-500 text-sm text-center">
+                  NAEEMA DKM Paramadina
+                </p>
+              </>
+            ) : (
+              <>
                 <h2 className="text-3xl font-bold mb-3 text-gray-900 mt-4">
                   Buka Bersama DKM Paramadina
                 </h2>
                 <p className="text-gray-800 text-lg">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                  Melangkah Bersama Cahaya Quran adalah acara buka bersama yang
+                  mengajak peserta untuk memperdalam pemahaman Al-Quran dan
+                  mempererat ukhuwah di bulan Ramadan.
                 </p>
               </>
-            ) : (
-              <Image
-                src="/logo_dkm_paramadina.png"
-                alt="Logo Tengah"
-                width={200}
-                height={100}
-              />
             )}
           </motion.div>
         </motion.div>

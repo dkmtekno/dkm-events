@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  nama     String
-  email    String  
-  prodi    String
-  nim      String? 
-  status   String
-  angkatan String?
-  divisi   String?
-  periode  String?
+  id        String  @id @default(cuid())
+  nama      String
+  email     String  
+  prodi     String
+  nim       String? @unique
+  status    String
+  angkatan  String?
+  divisi    String?
+  periode   String?
+  kehadiran Boolean @default(false) // Tambahkan kolom kehadiran
   createdAt DateTime @default(now())
 }
 
