@@ -44,7 +44,6 @@ export default function DaftarKehadiran() {
       },
     });
   }, []);
-  
 
   const fetchData = async () => {
     try {
@@ -108,12 +107,12 @@ export default function DaftarKehadiran() {
     });
   };
 
-  const updateAttendance = async (nim, kehadiran) => {
+  const updateAttendance = async (id, nim, kehadiran) => {
     try {
       const response = await fetch("/api/updateAttendance", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nim, kehadiran }),
+        body: JSON.stringify({ id, nim, kehadiran }), // Kirim id jika nim kosong
       });
 
       if (!response.ok) throw new Error("Gagal memperbarui kehadiran");
@@ -121,10 +120,19 @@ export default function DaftarKehadiran() {
       const updatedUser = await response.json();
 
       setUsers((prev) =>
-        prev.map((user) => (user.nim === nim ? { ...user, kehadiran } : user))
+        prev.map((user) =>
+          (nim && user.nim === nim) || (!nim && user.id === id)
+            ? { ...user, kehadiran }
+            : user
+        )
       );
+
       setFilteredUsers((prev) =>
-        prev.map((user) => (user.nim === nim ? { ...user, kehadiran } : user))
+        prev.map((user) =>
+          (nim && user.nim === nim) || (!nim && user.id === id)
+            ? { ...user, kehadiran }
+            : user
+        )
       );
 
       // Notifikasi sukses
@@ -163,7 +171,7 @@ export default function DaftarKehadiran() {
         {["angkatan", "divisi", "prodi", "periode"].map((filterKey) => (
           <select
             key={filterKey}
-            className="p-2 border rounded-md"
+            className="p-2 border border-blue-300 text-sky-950 rounded-md"
             value={filters[filterKey]}
             onChange={(e) =>
               setFilters((prev) => ({ ...prev, [filterKey]: e.target.value }))
@@ -197,7 +205,7 @@ export default function DaftarKehadiran() {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-blue-300 mt-4 text-sm sm:text-base">
           <thead>
-            <tr className="bg-blue-200">
+            <tr className="bg-blue-200 text-danger">
               <th className="border border-blue-300 px-4 py-2">No</th>
               {[
                 "Nama",
@@ -223,16 +231,16 @@ export default function DaftarKehadiran() {
                     {index + 1}
                   </td>
                   <td className="border border-blue-300 px-4 py-2">
-                    {user.nama}
+                    {user.nama || "-"}
                   </td>
                   <td className="border border-blue-300 px-4 py-2">
-                    {user.prodi}
+                    {user.prodi || "-"}
                   </td>
                   <td className="border border-blue-300 px-4 py-2">
-                    {user.nim}
+                    {user.nim || "-"}
                   </td>
                   <td className="border border-blue-300 px-4 py-2">
-                    {user.status}
+                    {user.status || "-"}
                   </td>
                   <td className="border border-blue-300 px-4 py-2">
                     {user.angkatan || "-"}
@@ -248,7 +256,7 @@ export default function DaftarKehadiran() {
                       type="checkbox"
                       checked={user.kehadiran}
                       onChange={(e) =>
-                        updateAttendance(user.nim, e.target.checked)
+                        updateAttendance(user.id, user.nim, e.target.checked)
                       }
                       className="w-5 h-5"
                     />

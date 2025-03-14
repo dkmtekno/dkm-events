@@ -56,12 +56,11 @@ export default function LoginPage() {
           className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 mt-8"
         >
           <LoginCard title="Mahasiswa" icon="🎓" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Dosen" icon="🧑‍🏫" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Dosen/Umum" icon="📋" setIsTransitioning={setIsTransitioning} />
           <LoginCard title="Pengurus DKM" icon="🕌" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Umum" icon="🌎" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Panitia" icon="🌎" setIsTransitioning={setIsTransitioning} />
         </motion.div>
 
-        {/* Footer */}
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,7 +123,7 @@ function LoginCard({ title, icon, setIsTransitioning }) {
         <span className="text-blue-600 text-2xl sm:text-3xl">{icon}</span>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-gray-500 text-xs sm:text-sm">Saya Seorang</p>
+        <p className="text-gray-500 text-xs sm:text-sm">Sebagai</p>
         <p className="text-blue-600 font-bold text-md sm:text-lg break-words whitespace-normal">
           {title}
         </p>

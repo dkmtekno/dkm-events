@@ -20,6 +20,14 @@ export default function FormPage() {
 
   const [slide, setSlide] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const storedRole = sessionStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  }, []);
 
   // Slide effect
   useEffect(() => {
@@ -167,8 +175,8 @@ export default function FormPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 2, ease: "easeInOut" }} // Slow transition for opacity
         >
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Form Pendaftaran
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+            {role ? `Selamat Datang ${role}` : "Form Pendaftaran"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
@@ -235,7 +243,7 @@ export default function FormPage() {
             >
               <option value="">Pilih Status</option>
               <option value="Mahasiswa">Mahasiswa</option>
-              <option value="Umum">Umum</option>
+              <option value="Umum">Dosen/Umum</option>
               <option value="Panitia">Panitia</option>
               <option value="Pengurus DKM">Pengurus DKM</option>
             </select>
