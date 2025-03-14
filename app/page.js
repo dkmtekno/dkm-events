@@ -56,9 +56,9 @@ export default function LoginPage() {
           className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 mt-8"
         >
           <LoginCard title="Mahasiswa" icon="🎓" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Dosen/Umum" icon="📋" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Dosen/Umum" icon="🌎" setIsTransitioning={setIsTransitioning} />
           <LoginCard title="Pengurus DKM" icon="🕌" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Panitia" icon="🌎" setIsTransitioning={setIsTransitioning} />
+          <LoginCard title="Panitia" icon="📋" setIsTransitioning={setIsTransitioning} />
         </motion.div>
 
         <motion.p 
@@ -70,7 +70,7 @@ export default function LoginPage() {
           © DKM Paramadina 2025. Hak Cipta Dilindungi.
           <br />
           <a href="#" className="text-blue-600 underline text-center">
-            Powered by DKM Paramadina.
+            Powered by Teknologi DKM Paramadina.
           </a>
         </motion.p>
       </div>
