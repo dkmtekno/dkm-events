@@ -20,6 +20,7 @@ export default function FormPage() {
 
   const [slide, setSlide] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [role, setRole] = useState("");
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export default function FormPage() {
           periode: "",
         });
 
+        setIsRedirecting(true);
         setTimeout(() => {
           setSubmitted(false);
           router.push("/countdown");
@@ -111,6 +113,11 @@ export default function FormPage() {
   };
 
   return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      animate={isRedirecting ? { opacity: 0 } : { opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
     <div className="flex items-center justify-center min-h-screen px-6 py-12 bg-blue-300">
       <Toaster position="top-center" />
       <div className="flex flex-col md:flex-row w-full max-w-5xl bg-gray-800 text-white rounded-2xl shadow-xl overflow-hidden">
@@ -292,5 +299,6 @@ export default function FormPage() {
         </motion.div>
       </div>
     </div>
+    </motion.div>
   );
 }

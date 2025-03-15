@@ -83,8 +83,8 @@ export default function CountdownTimer() {
         style={{ transformStyle: "preserve-3d", perspective: 1000 }}
       >
         <p className="flex items-center gap-2 text-lg font-semibold">📅 <span className="text-blue-400">Jumat, 21 Maret 2025</span></p>
-        <p className="flex items-center gap-2 text-lg font-semibold mt-2">⏰ <span className="text-blue-400">18:06 WIB</span></p>
-        <p className="flex items-center gap-2 text-lg font-semibold mt-2">📍 <span className="text-blue-400">Masjid DKM Paramadina</span></p>
+        <p className="flex items-center gap-2 text-lg font-semibold mt-2">⏰ <span className="text-blue-400">15:30 WIB - Selesai</span></p>
+        <p className="flex items-center gap-2 text-lg font-semibold mt-2">📍 <span className="text-blue-400">Aula Gedung C</span></p>
       </motion.div>
 
       <h2 className="text-2xl md:text-3xl font-bold mt-6 drop-shadow-md text-blue-300">Hitung Mundur Berbuka</h2>

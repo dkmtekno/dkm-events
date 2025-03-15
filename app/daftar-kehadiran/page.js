@@ -165,7 +165,7 @@ export default function DaftarKehadiran() {
           placeholder="Cari nama..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-2 border rounded-md"
+          className="p-2 border border-blue-300 text-sky-950 rounded-md"
         />
 
         {["angkatan", "divisi", "prodi", "periode"].map((filterKey) => (
