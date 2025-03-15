@@ -28,6 +28,7 @@ export default function DaftarKehadiran() {
       confirmButtonColor: "#4ea8de", // Warna biru muda
       cancelButtonColor: "#d33", // Warna merah untuk "Batal"
       inputAttributes: { autocapitalize: "off" },
+      reverseButtons: true, // Menukar posisi tombol
       preConfirm: (password) => {
         if (password === "naeemadkmparamadina") {
           setIsAuthorized(true);
@@ -155,7 +156,7 @@ export default function DaftarKehadiran() {
   if (!isAuthorized) return null;
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-5xl mx-auto mt-10 p-6 shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Daftar Kehadiran</h2>
 
       {/* Pencarian dan Filter */}
@@ -205,8 +206,10 @@ export default function DaftarKehadiran() {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-blue-300 mt-4 text-sm sm:text-base">
           <thead>
-            <tr className="bg-blue-200 text-danger">
-              <th className="border border-blue-300 px-4 py-2">No</th>
+            <tr className="bg-blue-200 text-sky-950 text-danger">
+              <th className="border border-blue-300 text-sky-950 px-4 py-2">
+                No
+              </th>
               {[
                 "Nama",
                 "Prodi",
@@ -217,7 +220,10 @@ export default function DaftarKehadiran() {
                 "Periode",
                 "Kehadiran",
               ].map((header) => (
-                <th key={header} className="border border-blue-300 px-4 py-2">
+                <th
+                  key={header}
+                  className="border border-blue-300 text-sky-950 px-4 py-2"
+                >
                   {header}
                 </th>
               ))}
@@ -227,31 +233,31 @@ export default function DaftarKehadiran() {
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
                 <tr key={user.id} className="hover:bg-blue-100">
-                  <td className="border border-blue-300 px-4 py-2 text-center">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2 text-center">
                     {index + 1}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.nama || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.prodi || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.nim || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.status || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.angkatan || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.divisi || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
                     {user.periode || "-"}
                   </td>
-                  <td className="border border-blue-300 px-4 py-2 text-center">
+                  <td className="border border-blue-300 text-sky-950 px-4 py-2 text-center">
                     <input
                       type="checkbox"
                       checked={user.kehadiran}
