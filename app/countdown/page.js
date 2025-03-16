@@ -71,7 +71,7 @@ export default function CountdownTimer() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-900 to-indigo-900 text-white p-6 text-center relative">
       <div className="absolute top-0 left-0 w-full h-full bg-[url('/buka_puasa.png')] bg-cover bg-center opacity-20"></div>
 
-      <h1 className="text-3xl md:text-4xl font-extrabold drop-shadow-xl text-blue-300">
+      <h1 className="text-1xl md:text-4xl font-extrabold drop-shadow-xl text-blue-300">
         🌙 Buka Puasa Bersama 🌙
       </h1>
 
