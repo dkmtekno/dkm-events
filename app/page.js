@@ -3,10 +3,57 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
+
+  useEffect(() => {
+    const checkParticipants = async () => {
+      try {
+        const response = await fetch("/api/form");
+        if (!response.ok) throw new Error("Gagal mengambil data");
+
+        const data = await response.json();
+        const uniqueUsers = Array.from(
+          new Map(data.map((user) => [user.nim, user])).values()
+        );
+
+        if (uniqueUsers.length >= 100) {
+          setIsClosed(true);
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data peserta:", error);
+      }
+    };
+
+    checkParticipants();
+  }, []);
+
+  if (isClosed) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen px-6 sm:px-10 text-center bg-gray-100">
+        <Image
+          src="/kucing_sedih.gif" 
+          alt="Pendaftaran Ditutup"
+          width={180} 
+          height={180}
+          priority 
+          className="w-40 sm:w-48"
+        />
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-700 mt-4">
+          😢 Pendaftaran Ditutup...
+        </h1>
+        <p className="text-gray-600 mt-2 text-sm sm:text-base">
+          Maaf sekali, kuota sudah penuh. Kami tidak bisa menerima pendaftaran lagi.
+        </p>
+        <p className="text-gray-500 italic mt-1 text-xs sm:text-sm">
+          Semoga kita bisa bertemu di kesempatan berikutnya... 💔
+        </p>
+      </div>
+    );
+  }
 
   return (
     <motion.div 
