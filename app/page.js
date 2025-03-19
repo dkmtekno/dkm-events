@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
 import Image from "next/image";
+import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { useEffect, useState } from "react";
 export default function LoginPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
+  const [sisaKuota, setSisaKuota] = useState(100);
 
   useEffect(() => {
     const checkParticipants = async () => {
@@ -16,12 +18,27 @@ export default function LoginPage() {
         if (!response.ok) throw new Error("Gagal mengambil data");
 
         const data = await response.json();
-        const uniqueUsers = Array.from(
-          new Map(data.map((user) => [user.nim, user])).values()
-        );
+        const totalKuota = 100;
+        const pesertaCount = data.length;
+        const sisaKuota = Math.max(0, totalKuota - pesertaCount);
 
-        if (uniqueUsers.length >= 100) {
+        setSisaKuota(sisaKuota);
+
+        if (pesertaCount >= totalKuota) {
           setIsClosed(true);
+          Swal.fire({
+            title: "Pendaftaran Ditutup!",
+            text: "Kuota sudah penuh. Tidak bisa menerima pendaftaran lagi.",
+            icon: "error",
+            confirmButtonText: "Oke",
+          });
+        } else if (sisaKuota <= 10) {
+          Swal.fire({
+            title: "Kuota Hampir Habis!",
+            text: `Sisa kuota tinggal ${sisaKuota} orang. Daftar segera!`,
+            icon: "warning",
+            confirmButtonText: "Mengerti",
+          });
         }
       } catch (error) {
         console.error("Gagal mengambil data peserta:", error);
@@ -35,18 +52,19 @@ export default function LoginPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen px-6 sm:px-10 text-center bg-gray-100">
         <Image
-          src="/kucing_sedih.gif" 
+          src="/kucing_sedih.gif"
           alt="Pendaftaran Ditutup"
-          width={180} 
+          width={180}
           height={180}
-          priority 
+          priority
           className="w-40 sm:w-48"
         />
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-700 mt-4">
           😢 Pendaftaran Ditutup...
         </h1>
         <p className="text-gray-600 mt-2 text-sm sm:text-base">
-          Maaf sekali, kuota sudah penuh. Kami tidak bisa menerima pendaftaran lagi.
+          Maaf sekali, kuota sudah penuh. Kami tidak bisa menerima pendaftaran
+          lagi.
         </p>
         <p className="text-gray-500 italic mt-1 text-xs sm:text-sm">
           Semoga kita bisa bertemu di kesempatan berikutnya... 💔
@@ -56,7 +74,7 @@ export default function LoginPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
@@ -64,17 +82,22 @@ export default function LoginPage() {
     >
       <div className="bg-white p-8 sm:p-14 rounded-2xl shadow-lg w-full max-w-2xl text-left">
         {/* Logo */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="flex justify-center"
         >
-          <Image src="/logo_dkm_paramadina.png" alt="Logo" width={160} height={50} />
+          <Image
+            src="/logo_dkm_paramadina.png"
+            alt="Logo"
+            width={160}
+            height={50}
+          />
         </motion.div>
 
         {/* Selamat Datang */}
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -82,8 +105,8 @@ export default function LoginPage() {
         >
           Selamat Datang
         </motion.h1>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
@@ -93,22 +116,43 @@ export default function LoginPage() {
         </motion.p>
 
         {/* Pilihan Login */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={{
             hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.3 } }
+            visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
           }}
           className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 mt-8"
         >
-          <LoginCard title="Mahasiswa" icon="🎓" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Dosen/Umum" icon="🌎" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Pengurus DKM" icon="🕌" setIsTransitioning={setIsTransitioning} />
-          <LoginCard title="Panitia" icon="📋" setIsTransitioning={setIsTransitioning} />
+          <LoginCard
+            title="Mahasiswa"
+            icon="🎓"
+            setIsTransitioning={setIsTransitioning}
+          />
+          <LoginCard
+            title="Dosen/Umum"
+            icon="🌎"
+            setIsTransitioning={setIsTransitioning}
+          />
+          <LoginCard
+            title="Pengurus DKM"
+            icon="🕌"
+            setIsTransitioning={setIsTransitioning}
+          />
+          <LoginCard
+            title="Panitia"
+            icon="📋"
+            setIsTransitioning={setIsTransitioning}
+          />
         </motion.div>
 
-        <motion.p 
+        <p className="text-gray-600 mt-4 text-sm text-center sm:text-base">
+          Sisa kuota pendaftaran Umum: <span className="font-bold">{sisaKuota}</span>{" "}
+          orang
+        </p>
+
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
@@ -124,12 +168,12 @@ export default function LoginPage() {
 
       {/* Overlay "Mengarahkan..." */}
       {isTransitioning && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="fixed inset-0 flex items-center justify-center bg-white z-50 w-screen h-screen"
         >
-          <motion.div 
+          <motion.div
             initial={{ scale: 1 }}
             animate={{ scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.5 }}
@@ -150,7 +194,7 @@ function LoginCard({ title, icon, setIsTransitioning }) {
   const handleClick = () => {
     setIsTransitioning(true);
     sessionStorage.setItem("role", title);
-    
+
     setTimeout(() => {
       router.push("/regristrasi");
     }, 500);
