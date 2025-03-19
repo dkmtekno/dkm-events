@@ -148,7 +148,7 @@ export default function LoginPage() {
         </motion.div>
 
         <p className="text-gray-600 mt-4 text-sm text-center sm:text-base">
-          Sisa kuota pendaftaran Umum: <span className="font-bold">{sisaKuota}</span>{" "}
+          Sisa kuota pendaftaran: <span className="font-bold">{sisaKuota}</span>{" "}
           orang
         </p>
 
