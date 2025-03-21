@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function LoginPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
-  const [sisaKuota, setSisaKuota] = useState(100);
+  const [sisaKuota, setSisaKuota] = useState(150);
 
   useEffect(() => {
     const checkParticipants = async () => {
@@ -18,7 +18,7 @@ export default function LoginPage() {
         if (!response.ok) throw new Error("Gagal mengambil data");
 
         const data = await response.json();
-        const totalKuota = 100;
+        const totalKuota = 150;
         const pesertaCount = data.length;
         const sisaKuota = Math.max(0, totalKuota - pesertaCount);
 
@@ -192,14 +192,24 @@ function LoginCard({ title, icon, setIsTransitioning }) {
   const router = useRouter();
 
   const handleClick = () => {
-    setIsTransitioning(true);
     sessionStorage.setItem("role", title);
-
-    setTimeout(() => {
-      router.push("/regristrasi");
-    }, 500);
+  
+    if (title === "Pengurus DKM" || title === "Panitia") {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        router.push("/regristrasi");
+      }, 500);
+    } else {
+      Swal.fire({
+        title: "Pendaftaran Ditutup!",
+        text: "Maaf, pendaftaran untuk kategori ini sudah ditutup. Silakan hubungi panitia jika ada pertanyaan lebih lanjut.",
+        icon: "error",
+        confirmButtonText: "Mengerti",
+        confirmButtonColor: "#4ea8de",
+      });
+    }
   };
-
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
