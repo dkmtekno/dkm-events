@@ -53,8 +53,8 @@ export default function DaftarKehadiran() {
 
       const data = await response.json();
       const uniqueUsers = Array.from(
-        new Map(data.map((user) => [user.nim, user])).values()
-      );
+        new Map(data.map((user) => [user.id, user])).values()
+      );      
 
       setUsers(uniqueUsers);
       setFilteredUsers(uniqueUsers);
@@ -77,7 +77,7 @@ export default function DaftarKehadiran() {
     );
 
     Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
+      if (filters[key] && filters[key] !== "") {
         data = data.filter((user) => user[key] === filters[key]);
       }
     });
@@ -169,7 +169,7 @@ export default function DaftarKehadiran() {
           className="p-2 border border-blue-300 text-sky-950 rounded-md"
         />
 
-        {["angkatan", "divisi", "prodi", "periode"].map((filterKey) => (
+        {["angkatan", "divisi", "prodi", "periode", "status"].map((filterKey) => (
           <select
             key={filterKey}
             className="p-2 border border-blue-300 text-sky-950 rounded-md"
