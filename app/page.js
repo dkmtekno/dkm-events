@@ -192,24 +192,14 @@ function LoginCard({ title, icon, setIsTransitioning }) {
   const router = useRouter();
 
   const handleClick = () => {
+    setIsTransitioning(true);
     sessionStorage.setItem("role", title);
-  
-    if (title === "Pengurus DKM" || title === "Panitia") {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        router.push("/regristrasi");
-      }, 500);
-    } else {
-      Swal.fire({
-        title: "Pendaftaran Ditutup!",
-        text: "Maaf, pendaftaran untuk kategori ini sudah ditutup. Silakan hubungi panitia jika ada pertanyaan lebih lanjut.",
-        icon: "error",
-        confirmButtonText: "Mengerti",
-        confirmButtonColor: "#4ea8de",
-      });
-    }
+
+    setTimeout(() => {
+      router.push("/regristrasi");
+    }, 500);
   };
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
