@@ -114,7 +114,7 @@ export async function POST(req) {
       subject: "Konfirmasi Pendaftaran",
       html: `
         <h2>Halo, ${nama}!</h2>
-        <p>Terima kasih telah mendaftar event Buka Bersama sebagai <strong>${status}</strong> di DKM Paramadina.</p>
+        <p>Terima kasih telah mendaftar event Maulid Nabi Muhammad SAW sebagai <strong>${status}</strong> di DKM Paramadina.</p>
         <p>Berikut detail pendaftaran Anda:</p>
         <ul>
           <li><strong>Nama:</strong> ${nama}</li>

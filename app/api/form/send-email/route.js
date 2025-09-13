@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import nodemailer from "nodemailer";
 
-const prisma = new PrismaClient();
-
 // Konfigurasi Transporter Nodemailer
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
