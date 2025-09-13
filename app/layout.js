@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Formulir Pendaftaran Buka Bersama DKM Paramadina",
-  description: "Buka Bersama - DKM Paramadina",
+  title: "Formulir Pendaftaran Maulid Nabi Muhammad DKM Paramadina",
+  description: "Maulid Nabi Muhammad - DKM Paramadina",
   icons: "/favicon.ico",
 };
 
