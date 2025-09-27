@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function LoginPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
-  const [sisaKuota, setSisaKuota] = useState(150);
+  const [sisaKuota, setSisaKuota] = useState(50);
 
   useEffect(() => {
     const checkParticipants = async () => {
@@ -18,7 +18,7 @@ export default function LoginPage() {
         if (!response.ok) throw new Error("Gagal mengambil data");
 
         const data = await response.json();
-        const totalKuota = 150;
+        const totalKuota = 50;
         const pesertaCount = data.length;
         const sisaKuota = Math.max(0, totalKuota - pesertaCount);
 
