@@ -161,12 +161,13 @@ export default function FormPage() {
                     height={700}
                     className="rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl h-auto"
                   />
-                  <h6 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900 mt-4 text-center">
-                    TEMA ACARA MAULID
-                  </h6>
-                  <p className="text-gray-500 text-sm sm:text-base text-center">
-                    NAEEMA DKM Paramadina
+                  <p className="text-blue-500 mt-3 font-bold text-sm sm:text-base text-center">
+                    Maulid Nabi Muhammad SAW
                   </p>
+                  <span className="text-xs font-semibold text-blue-900 mt-2 text-center">
+                    "Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah
+                    dalam Kehidupan Mahasiswa"
+                  </span>
                 </>
               ) : (
                 <>
@@ -177,12 +178,13 @@ export default function FormPage() {
                     height={700}
                     className="rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl h-auto"
                   />
-                  <h6 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900 mt-4 text-center">
-                    Maulid Nabi Muhammad SAW
-                  </h6>
-                  <p className="text-gray-700 text-sm sm:text-base md:text-lg text-center">
-                    NAEEMA DKM Paramadina
+                  <p className="text-blue-500 mt-3 font-bold text-sm sm:text-base text-center">
+                    Naeema DKM Paramadina
                   </p>
+                  <span className="text-xs font-semibold text-blue-900 mt-2 text-center">
+                    "Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah
+                    dalam Kehidupan Mahasiswa"
+                  </span>
                 </>
               )}
             </motion.div>
