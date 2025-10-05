@@ -5,6 +5,12 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import {
+  AcademicCapIcon,
+  GlobeAltIcon,
+  BuildingLibraryIcon,
+  ClipboardDocumentListIcon,
+} from "@heroicons/react/24/solid";
 
 export default function LoginPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -127,22 +133,24 @@ export default function LoginPage() {
         >
           <LoginCard
             title="Mahasiswa"
-            icon="🎓"
+            icon={<AcademicCapIcon className="w-8 h-8 text-blue-600" />}
             setIsTransitioning={setIsTransitioning}
           />
           <LoginCard
             title="Dosen/Umum"
-            icon="🌎"
+            icon={<GlobeAltIcon className="w-8 h-8 text-blue-600" />}
             setIsTransitioning={setIsTransitioning}
           />
           <LoginCard
             title="Pengurus DKM"
-            icon="🕌"
+            icon={<BuildingLibraryIcon className="w-8 h-8 text-blue-600" />}
             setIsTransitioning={setIsTransitioning}
           />
           <LoginCard
             title="Panitia"
-            icon="📋"
+            icon={
+              <ClipboardDocumentListIcon className="w-8 h-8 text-blue-600" />
+            }
             setIsTransitioning={setIsTransitioning}
           />
         </motion.div>

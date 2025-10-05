@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/icon_dkm.png" />
       </head>
-      <body>{children}</body>
+      <body className="bg-white">{children}</body>
     </html>
   );
 }

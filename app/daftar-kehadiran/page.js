@@ -157,7 +157,7 @@ export default function DaftarKehadiran() {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Daftar Kehadiran</h2>
+      <h2 className="text-2xl font-bold mb-4 text-blue-600">Daftar Kehadiran</h2>
 
       {/* Pencarian dan Filter */}
       <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -166,13 +166,13 @@ export default function DaftarKehadiran() {
           placeholder="Cari nama..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-2 border border-blue-300 text-sky-950 rounded-md"
+          className="p-2 border border-blue-300 text-black rounded-md"
         />
 
         {["angkatan", "divisi", "prodi", "periode", "status"].map((filterKey) => (
           <select
             key={filterKey}
-            className="p-2 border border-blue-300 text-sky-950 rounded-md"
+            className="p-2 border border-blue-300 text-black rounded-md"
             value={filters[filterKey]}
             onChange={(e) =>
               setFilters((prev) => ({ ...prev, [filterKey]: e.target.value }))
@@ -206,8 +206,8 @@ export default function DaftarKehadiran() {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-blue-300 mt-4 text-sm sm:text-base">
           <thead>
-            <tr className="bg-blue-200 text-sky-950 text-danger">
-              <th className="border border-blue-300 text-sky-950 px-4 py-2">
+            <tr className="bg-blue-200 text-black text-danger">
+              <th className="border border-blue-300 text-black px-4 py-2">
                 No
               </th>
               {[
@@ -222,7 +222,7 @@ export default function DaftarKehadiran() {
               ].map((header) => (
                 <th
                   key={header}
-                  className="border border-blue-300 text-sky-950 px-4 py-2"
+                  className="border border-blue-300 text-black px-4 py-2"
                 >
                   {header}
                 </th>
@@ -233,31 +233,31 @@ export default function DaftarKehadiran() {
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
                 <tr key={user.id} className="hover:bg-blue-100">
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2 text-center">
+                  <td className="border border-blue-300 text-black px-4 py-2 text-center">
                     {index + 1}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.nama || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.prodi || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.nim || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.status || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.angkatan || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.divisi || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2">
+                  <td className="border border-blue-300 text-black px-4 py-2">
                     {user.periode || "-"}
                   </td>
-                  <td className="border border-blue-300 text-sky-950 px-4 py-2 text-center">
+                  <td className="border border-blue-300 text-black px-4 py-2 text-center">
                     <input
                       type="checkbox"
                       checked={user.kehadiran}
@@ -273,7 +273,7 @@ export default function DaftarKehadiran() {
               <tr>
                 <td
                   colSpan="9"
-                  className="text-center border border-blue-300 px-4 py-2"
+                  className="text-center text-black border border-blue-300 px-4 py-2"
                 >
                   Tidak ada data
                 </td>
