@@ -24,7 +24,7 @@ export default function LoginPage() {
         if (!response.ok) throw new Error("Gagal mengambil data");
 
         const data = await response.json();
-        const totalKuota = 50;
+        const totalKuota = 70;
         const pesertaCount = data.length;
         const sisaKuota = Math.max(0, totalKuota - pesertaCount);
 
