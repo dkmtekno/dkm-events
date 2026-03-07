@@ -30,6 +30,20 @@ export default function FormPage() {
     const storedRole = sessionStorage.getItem("role");
     if (storedRole) {
       setRole(storedRole);
+      
+      // Map "Dosen/Umum" to "Umum" to match the select option value
+      const statusValue = storedRole === "Dosen/Umum" ? "Umum" : storedRole;
+      
+      setFormData((prev) => ({
+        ...prev,
+        status: statusValue,
+        // Pre-fill fields that depend on status
+        nim: statusValue === "Umum" ? "" : prev.nim,
+        prodi: statusValue === "Umum" ? "" : prev.prodi,
+        angkatan: statusValue === "Mahasiswa" ? prev.angkatan : "",
+        divisi: statusValue === "Panitia" ? "" : prev.divisi,
+        periode: statusValue === "Pengurus DKM" ? "2025/2026" : "",
+      }));
     }
   }, []);
 
