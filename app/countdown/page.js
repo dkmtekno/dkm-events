@@ -63,7 +63,7 @@ export default function CountdownTimer() {
 
     const x = ((clientX - left) / width - 0.5) * 30;
     const y = ((clientY - top) / height - 0.5) * -30;
-    
+
     setTilt({ rotateX: y, rotateY: x });
   };
 
@@ -82,7 +82,7 @@ export default function CountdownTimer() {
         onMouseLeave={() => setTilt({ rotateX: 0, rotateY: 0 })}
         style={{ transformStyle: "preserve-3d", perspective: 1000 }}
       >
-        <p className="flex items-center gap-2 text-lg font-semibold">📅 <span className="text-blue-400">Jumat, 21 Maret 2025</span></p>
+        <p className="flex items-center gap-2 text-lg font-semibold">📅 <span className="text-blue-400">Jumat, 21 Maret {new Date().getFullYear()}</span></p>
         <p className="flex items-center gap-2 text-lg font-semibold mt-2">⏰ <span className="text-blue-400">15:30 WIB - Selesai</span></p>
         <p className="flex items-center gap-2 text-lg font-semibold mt-2">📍 <span className="text-blue-400">Aula Gedung C</span></p>
       </motion.div>

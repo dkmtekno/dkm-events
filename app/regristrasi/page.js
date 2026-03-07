@@ -50,7 +50,7 @@ export default function FormPage() {
         prodi: statusValue === "Umum" ? "" : prev.prodi,
         angkatan: statusValue === "Mahasiswa" ? prev.angkatan : "",
         divisi: statusValue === "Panitia" ? "" : prev.divisi,
-        periode: statusValue === "Pengurus DKM" ? "2025/2026" : "",
+        periode: statusValue === "Pengurus DKM" ? `${new Date().getFullYear()}/${new Date().getFullYear() + 1}` : "",
       }));
     }
   }, []);
@@ -73,7 +73,7 @@ export default function FormPage() {
           prodi: value === "Umum" ? "" : prev.prodi,
           angkatan: value === "Mahasiswa" ? prev.angkatan : "",
           divisi: value === "Panitia" ? "" : prev.divisi,
-          periode: value === "Pengurus DKM" ? "2025/2026" : "",
+          periode: value === "Pengurus DKM" ? `${new Date().getFullYear()}/${new Date().getFullYear() + 1}` : "",
         }
         : {}),
     }));
@@ -208,7 +208,7 @@ export default function FormPage() {
           </div>
 
           <div className="mt-auto pt-12 relative z-10 text-xs font-medium text-white/50 tracking-widest uppercase">
-            © 2025 DKM Paramadina
+            © {new Date().getFullYear()} DKM Paramadina
           </div>
         </div>
 
