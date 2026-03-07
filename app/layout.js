@@ -8,11 +8,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link rel="icon" href="/icon_dkm.png" />
       </head>
-      <body className="bg-white">{children}</body>
+      <body className="bg-slate-950 text-white min-h-screen">
+        {children}
+      </body>
     </html>
   );
 }
