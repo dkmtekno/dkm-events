@@ -197,7 +197,7 @@ export default function FormPage() {
 
                 <div className="space-y-2 text-center md:text-left">
                   <h3 className="text-2xl font-bold tracking-tight">
-                    {slide === 0 ? "Maulid Nabi Muhammad SAW" : "Naeema DKM Paramadina"}
+                    {slide === 0 ? "Buka Bersama DKM Paramadina" : "Naeema DKM Paramadina"}
                   </h3>
                   <p className="text-blue-100/80 leading-relaxed font-light">
                     "Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah dalam Kehidupan Mahasiswa"

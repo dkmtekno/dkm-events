@@ -114,35 +114,30 @@ export async function POST(req) {
       subject: "Konfirmasi Pendaftaran",
       html: `
         <h2>Halo, ${nama}!</h2>
-        <p>Terima kasih telah mendaftar event Maulid Nabi Muhammad SAW sebagai <strong>${status}</strong> di DKM Paramadina.</p>
+        <p>Terima kasih telah mendaftar event Buka Bersama sebagai <strong>${status}</strong> di DKM Paramadina.</p>
         <p>Berikut detail pendaftaran Anda:</p>
         <ul>
           <li><strong>Nama:</strong> ${nama}</li>
-          ${
-            status !== "Umum"
-              ? `<li><strong>Prodi:</strong> ${prodi || "-"}</li>`
-              : ""
-          }
-          ${
-            status !== "Umum"
-              ? `<li><strong>NIM:</strong> ${nim || "-"}</li>`
-              : ""
-          }
-          ${
-            status === "Mahasiswa"
-              ? `<li><strong>Angkatan:</strong> ${angkatan || "-"}</li>`
-              : ""
-          }
-          ${
-            status === "Panitia"
-              ? `<li><strong>Divisi:</strong> ${divisi || "-"}</li>`
-              : ""
-          }
-          ${
-            status === "Pengurus DKM"
-              ? `<li><strong>Periode:</strong> ${periode || "-"}</li>`
-              : ""
-          }
+          ${status !== "Umum"
+          ? `<li><strong>Prodi:</strong> ${prodi || "-"}</li>`
+          : ""
+        }
+          ${status !== "Umum"
+          ? `<li><strong>NIM:</strong> ${nim || "-"}</li>`
+          : ""
+        }
+          ${status === "Mahasiswa"
+          ? `<li><strong>Angkatan:</strong> ${angkatan || "-"}</li>`
+          : ""
+        }
+          ${status === "Panitia"
+          ? `<li><strong>Divisi:</strong> ${divisi || "-"}</li>`
+          : ""
+        }
+          ${status === "Pengurus DKM"
+          ? `<li><strong>Periode:</strong> ${periode || "-"}</li>`
+          : ""
+        }
         </ul>
         <p>Jika ada pertanyaan, silakan hubungi panitia.</p>
         <p>Salam,</p>
