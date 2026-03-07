@@ -188,10 +188,10 @@ export default function FormPage() {
               >
                 <div className="relative aspect-square w-full max-w-[280px] mx-auto bg-white/5 rounded-2xl p-4 backdrop-blur-sm border border-white/10">
                   <Image
-                    src="/logo_dkm_paramadina.png"
-                    alt="Illustration"
+                    src={slide === 0 ? "/ilustrasi_bukber.png" : "/logo_dkm_paramadina.png"}
+                    alt={slide === 0 ? "Ilustrasi Buka Bersama" : "Logo DKM Paramadina"}
                     fill
-                    className="object-contain p-4 transition-transform duration-700 hover:scale-105"
+                    className={`object-contain p-4 transition-transform duration-700 hover:scale-105 ${slide === 1 ? 'bg-white rounded-2xl drop-shadow-2xl' : ''}`}
                   />
                 </div>
 
