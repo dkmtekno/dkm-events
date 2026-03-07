@@ -188,7 +188,7 @@ export default function FormPage() {
               >
                 <div className="relative aspect-square w-full max-w-[280px] mx-auto bg-white/5 rounded-2xl p-4 backdrop-blur-sm border border-white/10">
                   <Image
-                    src="/ilustrasi_bukber.png"
+                    src="/logo_dkm_paramadina.png"
                     alt="Illustration"
                     fill
                     className="object-contain p-4 transition-transform duration-700 hover:scale-105"
@@ -197,7 +197,7 @@ export default function FormPage() {
 
                 <div className="space-y-2 text-center md:text-left">
                   <h3 className="text-2xl font-bold tracking-tight">
-                    {slide === 0 ? "Buka Bersama DKM Paramadina" : "Naeema DKM Paramadina"}
+                    {slide === 0 ? "Buka Bersama DKM Paramadina" : "DKM Paramadina"}
                   </h3>
                   <p className="text-blue-100/80 leading-relaxed font-light">
                     "Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah dalam Kehidupan Mahasiswa"
