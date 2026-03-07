@@ -171,6 +171,7 @@ export async function POST(req) {
           <div style="background-color: #f9fafb; padding: 24px; text-align: center; border-top: 1px solid #e5e7eb;">
             <p style="margin: 0; color: #6b7280; font-size: 14px;">Salam hangat,</p>
             <p style="margin: 6px 0 0; color: #374151; font-weight: 600; font-size: 15px;">DKM Universitas Paramadina</p>
+            <p style="margin: 16px 0 0; color: #9ca3af; font-size: 12px; font-style: italic;">Powered by Digital Teknologi DKM Paramadina</p>
           </div>
         </div>
       `,
