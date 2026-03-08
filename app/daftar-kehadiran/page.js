@@ -44,7 +44,7 @@ export default function DaftarKehadiran() {
       customClass: {
         popup: 'rounded-3xl border border-slate-700 bg-slate-900 text-white',
         title: 'text-2xl font-bold text-white',
-        input: 'bg-slate-800 border-slate-700 text-white rounded-xl focus:ring-primary'
+        input: 'bg-slate-800 border-slate-700 text-white rounded-xl focus:ring-brand-primary'
       },
       preConfirm: (password) => {
         if (password === "naeemadkmparamadina") {
@@ -277,13 +277,13 @@ export default function DaftarKehadiran() {
           <div className="p-6 md:p-8 bg-white/50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
               <div className="lg:col-span-2 relative group">
-                <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 <input
                   type="text"
                   placeholder="Cari Nama atau NIM..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary outline-none transition-all text-slate-900 dark:text-white"
+                  className="w-full pl-12 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary outline-none transition-all text-slate-900 dark:text-white"
                 />
               </div>
 
@@ -291,7 +291,7 @@ export default function DaftarKehadiran() {
                 <div key={filterKey} className="relative group">
                   <FunnelIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <select
-                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 appearance-none focus:border-primary outline-none transition-all text-slate-900 dark:text-white capitalize"
+                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 appearance-none focus:border-brand-primary outline-none transition-all text-slate-900 dark:text-white capitalize"
                     value={filters[filterKey]}
                     onChange={(e) =>
                       setFilters((prev) => ({ ...prev, [filterKey]: e.target.value }))
@@ -379,7 +379,7 @@ export default function DaftarKehadiran() {
                           <p className="text-slate-500 font-medium">Tidak ada data yang cocok dengan kriteria Anda.</p>
                           <button
                             onClick={() => { setSearch(""); setFilters({ angkatan: "", divisi: "", prodi: "", periode: "", status: "" }) }}
-                            className="mt-4 text-primary font-bold hover:underline"
+                            className="mt-4 text-brand-primary font-bold hover:underline"
                           >
                             Reset Filter
                           </button>

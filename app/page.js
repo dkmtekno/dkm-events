@@ -39,7 +39,7 @@ export default function LoginPage() {
             icon: "error",
             confirmButtonText: "Oke",
             customClass: {
-              confirmButton: 'bg-primary px-8 py-3 rounded-full text-white font-semibold'
+              confirmButton: 'bg-brand-primary px-8 py-3 rounded-full text-white font-semibold'
             }
           });
         } else if (sisaKuota <= 10) {
@@ -49,7 +49,7 @@ export default function LoginPage() {
             icon: "warning",
             confirmButtonText: "Mengerti",
             customClass: {
-              confirmButton: 'bg-primary px-8 py-3 rounded-full text-white font-semibold'
+              confirmButton: 'bg-brand-primary px-8 py-3 rounded-full text-white font-semibold'
             }
           });
         }
@@ -83,7 +83,7 @@ export default function LoginPage() {
           <p className="text-slate-600 dark:text-slate-400 mb-6">
             Maaf sekali, kuota sudah penuh. Kami tidak bisa menerima pendaftaran lagi.
           </p>
-          <p className="text-primary font-medium italic">
+          <p className="text-brand-primary font-medium italic">
             Semoga kita bisa bertemu di kesempatan berikutnya... 💔
           </p>
         </motion.div>
@@ -102,8 +102,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6 md:p-12 font-['Outfit'] relative overflow-hidden">
       {/* Dynamic Background Blobs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-primary/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-400/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-brand-primary/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-accent/20 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -181,10 +181,10 @@ export default function LoginPage() {
           transition={{ delay: 1 }}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary font-medium text-sm">
+          <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-brand-primary/5 border border-brand-primary/10 text-brand-primary font-medium text-sm">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
             </span>
             <span>Sisa kuota pendaftaran: <strong>{sisaKuota}</strong> orang</span>
           </div>
@@ -210,7 +210,7 @@ export default function LoginPage() {
             transition={{ repeat: Infinity, duration: 1.5 }}
             className="flex flex-col items-center"
           >
-            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+            <div className="w-16 h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-4" />
             <h2 className="text-2xl font-bold text-white tracking-widest uppercase">Mengarahkan...</h2>
           </motion.div>
         </motion.div>
@@ -243,17 +243,17 @@ function LoginCard({ title, description, icon, setIsTransitioning }) {
       className="group glass p-8 rounded-3xl cursor-pointer hover:bg-white/60 dark:hover:bg-slate-800/60 transition-all flex items-start space-x-6 relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-        <ArrowRightIcon className="w-5 h-5 text-primary" />
+        <ArrowRightIcon className="w-5 h-5 text-brand-primary" />
       </div>
 
-      <div className="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-2xl group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-        <div className="text-primary group-hover:text-white transition-colors duration-300">
+      <div className="w-16 h-16 flex items-center justify-center bg-brand-primary/10 rounded-2xl group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
+        <div className="text-brand-primary group-hover:text-white transition-colors duration-300">
           {icon}
         </div>
       </div>
 
       <div className="flex-1">
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-primary transition-colors">
           {title}
         </h3>
         <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-light">

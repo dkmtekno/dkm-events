@@ -122,7 +122,7 @@ export default function FormPage() {
           icon: "success",
           confirmButtonText: "Selesai",
           customClass: {
-            confirmButton: 'bg-primary px-8 py-3 rounded-full text-white font-semibold'
+            confirmButton: 'bg-brand-primary px-8 py-3 rounded-full text-white font-semibold'
           }
         });
       } else {
@@ -158,9 +158,9 @@ export default function FormPage() {
         className="w-full max-w-6xl glass rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-2xl"
       >
         {/* Left Side - Visual Panel */}
-        <div className="md:w-5/12 bg-primary relative overflow-hidden flex flex-col p-8 md:p-12 text-white">
+        <div className="md:w-5/12 bg-brand-primary relative overflow-hidden flex flex-col p-8 md:p-12 text-white">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/20 rounded-full -ml-32 -mb-32 blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-accent/20 rounded-full -ml-32 -mb-32 blur-3xl animate-pulse" />
 
           <div className="relative z-10">
             <motion.div
@@ -232,7 +232,7 @@ export default function FormPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <motion.div variants={itemVariants} className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <UserIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                  <UserIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 </div>
                 <input
                   type="text"
@@ -240,14 +240,14 @@ export default function FormPage() {
                   placeholder="Nama Lengkap"
                   value={formData.nama}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
                   required
                 />
               </motion.div>
 
               <motion.div variants={itemVariants} className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <EnvelopeIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                  <EnvelopeIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 </div>
                 <input
                   type="email"
@@ -255,20 +255,20 @@ export default function FormPage() {
                   placeholder="Alamat Email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
                   required
                 />
               </motion.div>
 
               <motion.div variants={itemVariants} className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <UserGroupIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                  <UserGroupIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 </div>
                 <select
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-10 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none appearance-none text-slate-900 dark:text-white"
+                  className="w-full pl-11 pr-10 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none appearance-none text-slate-900 dark:text-white"
                   required
                 >
                   <option value="">Pilih Status</option>
@@ -294,13 +294,13 @@ export default function FormPage() {
                   >
                     <div className="relative group">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <AcademicCapIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                        <AcademicCapIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                       </div>
                       <select
                         name="prodi"
                         value={formData.prodi}
                         onChange={handleChange}
-                        className="w-full pl-11 pr-10 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none appearance-none text-slate-900 dark:text-white"
+                        className="w-full pl-11 pr-10 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none appearance-none text-slate-900 dark:text-white"
                         required
                       >
                         <option value="">Pilih Program Studi</option>
@@ -317,7 +317,7 @@ export default function FormPage() {
 
                     <div className="relative group">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <IdentificationIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                        <IdentificationIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                       </div>
                       <input
                         type="text"
@@ -325,7 +325,7 @@ export default function FormPage() {
                         placeholder="NIM / ID Member"
                         value={formData.nim}
                         onChange={handleChange}
-                        className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                        className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
                         required
                       />
                     </div>
@@ -342,7 +342,7 @@ export default function FormPage() {
                     className="relative group overflow-hidden"
                   >
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                      <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                     </div>
                     <input
                       type="text"
@@ -350,7 +350,7 @@ export default function FormPage() {
                       placeholder="Angkatan (Contoh: 2023)"
                       value={formData.angkatan}
                       onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
                       required
                     />
                   </motion.div>
@@ -364,7 +364,7 @@ export default function FormPage() {
                     className="relative group overflow-hidden"
                   >
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <BriefcaseIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                      <BriefcaseIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                     </div>
                     <input
                       type="text"
@@ -372,7 +372,7 @@ export default function FormPage() {
                       placeholder="Divisi Kepanitiaan"
                       value={formData.divisi}
                       onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
                       required
                     />
                   </motion.div>
@@ -386,7 +386,7 @@ export default function FormPage() {
                     className="relative group overflow-hidden"
                   >
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+                      <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                     </div>
                     <input
                       type="text"
@@ -394,7 +394,7 @@ export default function FormPage() {
                       placeholder="Periode Pengurusan"
                       value={formData.periode}
                       onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
                       required
                     />
                   </motion.div>
