@@ -236,7 +236,7 @@ export default function FormPage() {
             </motion.div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <motion.div variants={itemVariants} className="relative group">
+              <motion.div layout variants={itemVariants} className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <UserIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 </div>
@@ -251,7 +251,7 @@ export default function FormPage() {
                 />
               </motion.div>
 
-              <motion.div variants={itemVariants} className="relative group">
+              <motion.div layout variants={itemVariants} className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <EnvelopeIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 </div>
@@ -266,7 +266,7 @@ export default function FormPage() {
                 />
               </motion.div>
 
-              <motion.div variants={itemVariants} className="relative group">
+              <motion.div layout variants={itemVariants} className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <UserGroupIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                 </div>
@@ -290,12 +290,14 @@ export default function FormPage() {
                 </div>
               </motion.div>
 
-              <AnimatePresence>
+              <AnimatePresence mode="popLayout">
                 {formData.status !== "Umum" && formData.status !== "" && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
+                    layout
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="space-y-4 overflow-hidden"
                   >
                     <div className="relative group">
@@ -339,15 +341,17 @@ export default function FormPage() {
                 )}
               </AnimatePresence>
 
-              <AnimatePresence>
+              <AnimatePresence mode="popLayout">
                 {formData.status === "Mahasiswa" && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="relative group overflow-hidden"
+                    layout
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="space-y-4 overflow-hidden"
                   >
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <div className="relative group">
                       <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                     </div>
                     <input
@@ -364,12 +368,14 @@ export default function FormPage() {
 
                 {formData.status === "Panitia" && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="relative group overflow-hidden"
+                    layout
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="space-y-4 overflow-hidden"
                   >
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <div className="relative group">
                       <BriefcaseIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                     </div>
                     <input
@@ -386,12 +392,14 @@ export default function FormPage() {
 
                 {formData.status === "Pengurus DKM" && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="relative group overflow-hidden"
+                    layout
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="space-y-4 overflow-hidden"
                   >
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <div className="relative group">
                       <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                     </div>
                     <input
@@ -408,6 +416,7 @@ export default function FormPage() {
               </AnimatePresence>
 
               <motion.button
+                layout
                 variants={itemVariants}
                 whileHover={{ scale: 1.01, translateY: -2 }}
                 whileTap={{ scale: 0.98 }}
