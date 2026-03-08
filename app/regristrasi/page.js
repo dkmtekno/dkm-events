@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Fireflies from "../../components/Fireflies";
 import {
   UserIcon,
   EnvelopeIcon,
@@ -153,7 +154,8 @@ export default function FormPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 md:p-8 font-['Outfit']">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 md:p-8 font-['Outfit'] relative overflow-hidden">
+      <Fireflies />
       <Toaster position="top-right" />
 
       <motion.div
