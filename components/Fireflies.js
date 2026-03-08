@@ -21,8 +21,8 @@ export default function Fireflies() {
         const moveX = (Math.random() - 0.5) * 400; // random movement range
         const moveY = (Math.random() - 0.5) * 400;
         const duration = 15 + Math.random() * 20; // 15 to 35 seconds
-        const delay = Math.random() * 10;
         const size = 3 + Math.random() * 4; // 3px to 7px
+        const initialOpacity = Math.random() * 0.5 + 0.3;
 
         return (
             <motion.div
@@ -33,17 +33,16 @@ export default function Fireflies() {
                     height: size,
                     boxShadow: `0 0 ${size * 3}px ${size}px rgba(255, 170, 0, 0.4)`
                 }}
-                initial={{ x: startX, y: startY, opacity: 0 }}
+                initial={{ x: startX, y: startY, opacity: initialOpacity }}
                 animate={{
                     x: startX + moveX,
                     y: startY + moveY,
-                    opacity: [0, 0.8, 0.2, 0.9, 0], // pulsing effect
+                    opacity: [initialOpacity, 0.8, 0.2, 0.9, 0.1, initialOpacity], // pulsing effect
                 }}
                 transition={{
                     duration: duration,
                     repeat: Infinity,
                     repeatType: "reverse",
-                    delay: delay,
                     ease: "easeInOut"
                 }}
             />
