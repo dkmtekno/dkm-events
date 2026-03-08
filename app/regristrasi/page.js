@@ -124,6 +124,10 @@ export default function FormPage() {
           customClass: {
             confirmButton: 'bg-brand-primary px-8 py-3 rounded-full text-white font-semibold'
           }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push('/');
+          }
         });
       } else {
         toast.error(data.error || "Terjadi kesalahan.");
