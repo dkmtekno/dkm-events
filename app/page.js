@@ -190,7 +190,7 @@ export default function LoginPage() {
           </div>
 
           <p className="text-slate-400 text-sm mt-8">
-            © {new Date().getFullYear()} DKM Paramadina • Powered by Teknologi DKM
+            © {new Date().getFullYear()} DKM Paramadina • Powered by Digital Teknologi DKM
           </p>
         </motion.div>
       </motion.div>
