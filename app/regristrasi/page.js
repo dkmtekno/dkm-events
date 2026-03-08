@@ -158,8 +158,8 @@ export default function FormPage() {
         className="w-full max-w-6xl glass rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-2xl"
       >
         {/* Left Side - Visual Panel */}
-        <div className="md:w-5/12 bg-brand-primary relative overflow-hidden flex flex-col p-8 md:p-12 text-white">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl animate-pulse" />
+        <div className="md:w-5/12 bg-gradient-to-br from-neutral-900 to-black relative overflow-hidden flex flex-col p-8 md:p-12 text-white border-r border-white/5">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full -mr-32 -mt-32 blur-3xl animate-pulse" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-accent/20 rounded-full -ml-32 -mb-32 blur-3xl animate-pulse" />
 
           <div className="relative z-10">
@@ -199,7 +199,7 @@ export default function FormPage() {
                   <h3 className="text-2xl font-bold tracking-tight">
                     {slide === 0 ? "Buka Bersama DKM Paramadina" : "DKM Paramadina"}
                   </h3>
-                  <p className="text-blue-100/80 leading-relaxed font-light">
+                  <p className="text-neutral-300 leading-relaxed font-light">
                     "Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah dalam Kehidupan Mahasiswa"
                   </p>
                 </div>
