@@ -352,17 +352,19 @@ export default function FormPage() {
                     className="space-y-4 overflow-hidden"
                   >
                     <div className="relative group">
-                      <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      </div>
+                      <input
+                        type="text"
+                        name="angkatan"
+                        placeholder="Angkatan (Contoh: 2023)"
+                        value={formData.angkatan}
+                        onChange={handleChange}
+                        className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                        required
+                      />
                     </div>
-                    <input
-                      type="text"
-                      name="angkatan"
-                      placeholder="Angkatan (Contoh: 2023)"
-                      value={formData.angkatan}
-                      onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
-                      required
-                    />
                   </motion.div>
                 )}
 
@@ -376,17 +378,19 @@ export default function FormPage() {
                     className="space-y-4 overflow-hidden"
                   >
                     <div className="relative group">
-                      <BriefcaseIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <BriefcaseIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      </div>
+                      <input
+                        type="text"
+                        name="divisi"
+                        placeholder="Divisi Kepanitiaan"
+                        value={formData.divisi}
+                        onChange={handleChange}
+                        className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                        required
+                      />
                     </div>
-                    <input
-                      type="text"
-                      name="divisi"
-                      placeholder="Divisi Kepanitiaan"
-                      value={formData.divisi}
-                      onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
-                      required
-                    />
                   </motion.div>
                 )}
 
@@ -400,17 +404,19 @@ export default function FormPage() {
                     className="space-y-4 overflow-hidden"
                   >
                     <div className="relative group">
-                      <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <CalendarIcon className="h-5 w-5 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      </div>
+                      <input
+                        type="text"
+                        name="periode"
+                        placeholder="Periode Pengurusan"
+                        value={formData.periode}
+                        onChange={handleChange}
+                        className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
+                        required
+                      />
                     </div>
-                    <input
-                      type="text"
-                      name="periode"
-                      placeholder="Periode Pengurusan"
-                      value={formData.periode}
-                      onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-primary dark:focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all outline-none text-slate-900 dark:text-white"
-                      required
-                    />
                   </motion.div>
                 )}
               </AnimatePresence>
