@@ -177,12 +177,16 @@ export default function LoginPage() {
             icon={<ClipboardDocumentListIcon className="w-8 h-8" />}
             setIsTransitioning={setIsTransitioning}
           />
-          <LoginCard
-            title="Alumni DKM"
-            description="Alumni DKM Universitas Paramadina"
-            icon={<IdentificationIcon className="w-8 h-8" />}
-            setIsTransitioning={setIsTransitioning}
-          />
+          <div className="sm:col-span-2 flex justify-center mt-2">
+            <div className="w-full sm:w-1/2">
+              <LoginCard
+                title="Alumni DKM"
+                description="Alumni DKM Universitas Paramadina"
+                icon={<IdentificationIcon className="w-8 h-8" />}
+                setIsTransitioning={setIsTransitioning}
+              />
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
