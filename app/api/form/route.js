@@ -56,9 +56,9 @@ export async function POST(req) {
       );
     }
 
-    if (status !== "Umum" && !prodi) {
+    if (status !== "Umum" && status !== "Alumni DKM" && !prodi) {
       return NextResponse.json(
-        { error: "Prodi wajib diisi kecuali untuk status Umum." },
+        { error: "Prodi wajib diisi kecuali untuk status Umum atau Alumni DKM." },
         { status: 400 }
       );
     }
@@ -78,9 +78,9 @@ export async function POST(req) {
       );
     }
 
-    if (status === "Pengurus DKM" && !periode) {
+    if ((status === "Pengurus DKM" || status === "Alumni DKM") && !periode) {
       return NextResponse.json(
-        { error: "Periode harus diisi untuk status Pengurus DKM." },
+        { error: "Periode harus diisi untuk status Pengurus DKM atau Alumni DKM." },
         { status: 400 }
       );
     }
@@ -91,12 +91,12 @@ export async function POST(req) {
       data: {
         nama,
         email,
-        prodi: status === "Umum" ? "-" : prodi, // Ganti null dengan "-"
+        prodi: (status === "Umum" || status === "Alumni DKM") ? "-" : prodi, // Ganti null dengan "-"
         nim: nim || null,
         status,
         angkatan: status === "Mahasiswa" ? angkatan : null,
         divisi: status === "Panitia" ? divisi : null,
-        periode: status === "Pengurus DKM" ? periode : null,
+        periode: (status === "Pengurus DKM" || status === "Alumni DKM") ? periode : null,
       },
     });
 
@@ -128,14 +128,14 @@ export async function POST(req) {
                   <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280; width: 35%;"><strong>Nama</strong></td>
                   <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${nama}</td>
                 </tr>
-                ${status !== "Umum"
+                ${(status !== "Umum" && status !== "Alumni DKM")
           ? `<tr>
                       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Prodi</strong></td>
                       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${prodi || "-"}</td>
                      </tr>`
           : ""
         }
-                ${status !== "Umum"
+                ${(status !== "Umum" && status !== "Alumni DKM")
           ? `<tr>
                       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>NIM</strong></td>
                       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${nim || "-"}</td>
@@ -156,7 +156,7 @@ export async function POST(req) {
                      </tr>`
           : ""
         }
-                ${status === "Pengurus DKM"
+                ${(status === "Pengurus DKM" || status === "Alumni DKM")
           ? `<tr>
                       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Periode</strong></td>
                       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${periode || "-"}</td>

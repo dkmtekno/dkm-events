@@ -7,11 +7,12 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Fireflies from "../components/Fireflies";
 import {
-  AcademicCapIcon,
+  ArrowRightIcon,
   GlobeAltIcon,
-  BuildingLibraryIcon,
+  AcademicCapIcon,
   ClipboardDocumentListIcon,
-  ArrowRightIcon
+  BuildingLibraryIcon,
+  IdentificationIcon
 } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
@@ -174,6 +175,12 @@ export default function LoginPage() {
             title="Panitia"
             description="Panitia penyelenggara event"
             icon={<ClipboardDocumentListIcon className="w-8 h-8" />}
+            setIsTransitioning={setIsTransitioning}
+          />
+          <LoginCard
+            title="Alumni DKM"
+            description="Alumni DKM Universitas Paramadina"
+            icon={<IdentificationIcon className="w-8 h-8" />}
             setIsTransitioning={setIsTransitioning}
           />
         </motion.div>

@@ -47,11 +47,11 @@ export default function FormPage() {
       setFormData((prev) => ({
         ...prev,
         status: statusValue,
-        nim: statusValue === "Umum" ? "" : prev.nim,
-        prodi: statusValue === "Umum" ? "" : prev.prodi,
+        nim: statusValue === "Umum" || statusValue === "Alumni DKM" ? "" : prev.nim,
+        prodi: statusValue === "Umum" || statusValue === "Alumni DKM" ? "" : prev.prodi,
         angkatan: statusValue === "Mahasiswa" ? prev.angkatan : "",
         divisi: statusValue === "Panitia" ? "" : prev.divisi,
-        periode: statusValue === "Pengurus DKM" ? `${new Date().getFullYear()}/${new Date().getFullYear() + 1}` : "",
+        periode: statusValue === "Pengurus DKM" || statusValue === "Alumni DKM" ? `${new Date().getFullYear()}/${new Date().getFullYear() + 1}` : "",
       }));
     }
   }, []);
@@ -70,11 +70,11 @@ export default function FormPage() {
       [name]: value,
       ...(name === "status"
         ? {
-          nim: value === "Umum" ? "" : prev.nim,
-          prodi: value === "Umum" ? "" : prev.prodi,
+          nim: value === "Umum" || value === "Alumni DKM" ? "" : prev.nim,
+          prodi: value === "Umum" || value === "Alumni DKM" ? "" : prev.prodi,
           angkatan: value === "Mahasiswa" ? prev.angkatan : "",
           divisi: value === "Panitia" ? "" : prev.divisi,
-          periode: value === "Pengurus DKM" ? `${new Date().getFullYear()}/${new Date().getFullYear() + 1}` : "",
+          periode: value === "Pengurus DKM" || value === "Alumni DKM" ? `${new Date().getFullYear()}/${new Date().getFullYear() + 1}` : "",
         }
         : {}),
     }));
@@ -282,6 +282,7 @@ export default function FormPage() {
                   <option value="Umum">Dosen / Umum</option>
                   <option value="Panitia">Panitia</option>
                   <option value="Pengurus DKM">Pengurus DKM</option>
+                  <option value="Alumni DKM">Alumni DKM</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                   <svg className="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -291,7 +292,7 @@ export default function FormPage() {
               </motion.div>
 
               <AnimatePresence mode="popLayout">
-                {formData.status !== "Umum" && formData.status !== "" && (
+                {formData.status !== "Umum" && formData.status !== "Alumni DKM" && formData.status !== "" && (
                   <motion.div
                     layout
                     initial={{ opacity: 0, height: 0 }}
@@ -394,7 +395,7 @@ export default function FormPage() {
                   </motion.div>
                 )}
 
-                {formData.status === "Pengurus DKM" && (
+                {(formData.status === "Pengurus DKM" || formData.status === "Alumni DKM") && (
                   <motion.div
                     layout
                     initial={{ opacity: 0, height: 0 }}

@@ -23,9 +23,16 @@ export async function POST(req) {
     const { nama, email, prodi, nim, status, angkatan, divisi, periode } = body;
 
     // Validasi input
-    if (!nama || !email || !prodi || !status) {
+    if (!nama || !email || !status) {
       return NextResponse.json(
-        { error: "Nama, Email, Prodi, dan Status wajib diisi." },
+        { error: "Nama, Email, dan Status wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    if (status !== "Umum" && status !== "Alumni DKM" && !prodi) {
+      return NextResponse.json(
+        { error: "Prodi wajib diisi kecuali untuk status Umum atau Alumni DKM." },
         { status: 400 }
       );
     }
@@ -42,12 +49,12 @@ export async function POST(req) {
       data: {
         nama,
         email,
-        prodi,
+        prodi: (status === "Umum" || status === "Alumni DKM") ? "-" : prodi,
         nim: nim || null,
         status,
         angkatan: status === "Mahasiswa" ? angkatan : null,
         divisi: status === "Panitia" ? divisi : null,
-        periode: status === "Pengurus DKM" ? periode : null,
+        periode: (status === "Pengurus DKM" || status === "Alumni DKM") ? periode : null,
       },
     });
 
@@ -74,30 +81,45 @@ export async function POST(req) {
                   <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280; width: 35%;"><strong>Nama</strong></td>
                   <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${nama}</td>
                 </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Prodi</strong></td>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${prodi}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>NIM</strong></td>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${nim || "-"}</td>
-                </tr>
+                ${(status !== "Umum" && status !== "Alumni DKM")
+          ? `<tr>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Prodi</strong></td>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${prodi || "-"}</td>
+                     </tr>`
+          : ""
+        }
+                ${(status !== "Umum" && status !== "Alumni DKM")
+          ? `<tr>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>NIM</strong></td>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${nim || "-"}</td>
+                     </tr>`
+          : ""
+        }
                 <tr>
                   <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Status</strong></td>
                   <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${status}</td>
                 </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Angkatan</strong></td>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${angkatan || "-"}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Divisi</strong></td>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${divisi || "-"}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Periode</strong></td>
-                  <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${periode || "-"}</td>
-                </tr>
+                ${status === "Mahasiswa"
+          ? `<tr>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Angkatan</strong></td>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${angkatan || "-"}</td>
+                     </tr>`
+          : ""
+        }
+                ${status === "Panitia"
+          ? `<tr>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Divisi</strong></td>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${divisi || "-"}</td>
+                     </tr>`
+          : ""
+        }
+                ${(status === "Pengurus DKM" || status === "Alumni DKM")
+          ? `<tr>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280;"><strong>Periode</strong></td>
+                      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #111827;">${periode || "-"}</td>
+                     </tr>`
+          : ""
+        }
               </tbody>
             </table>
             
