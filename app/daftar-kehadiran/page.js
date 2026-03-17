@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast, Toaster } from "react-hot-toast";
@@ -109,50 +110,163 @@ export default function DaftarKehadiran() {
     return { total, present, absent };
   }, [filteredUsers]);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (filteredUsers.length === 0) {
       toast.error("Tidak ada data untuk diunduh!");
       return;
     }
 
-    // Format data for Excel
-    const dataToExport = filteredUsers.map((u, i) => ({
-      No: i + 1,
-      Nama: u.nama,
-      Email: u.email,
-      NIM: u.nim || "-",
-      Status: u.status,
-      Prodi: u.prodi || "-",
-      Angkatan: u.angkatan || "-",
-      Divisi: u.divisi || "-",
-      Periode: u.periode || "-",
-      Kehadiran: u.kehadiran ? "Hadir" : "Belum Hadir"
-    }));
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Daftar Kehadiran", {
+      properties: { tabColor: { argb: 'FF0066FF' } }
+    });
 
-    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    // --- Judul & Info ---
+    worksheet.mergeCells('A1:J1');
+    const titleRow = worksheet.getCell('A1');
+    titleRow.value = "Laporan Kehadiran Event DKM Paramadina";
+    titleRow.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+    titleRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0066FF' } };
+    titleRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    
+    worksheet.mergeCells('A2:J2');
+    const subtitleRow = worksheet.getCell('A2');
+    subtitleRow.value = `Diekspor pada: ${new Date().toLocaleString('id-ID')}`;
+    subtitleRow.font = { name: 'Arial', size: 10, italic: true };
+    subtitleRow.alignment = { vertical: 'middle', horizontal: 'right' };
 
-    // Add summary row
-    XLSX.utils.sheet_add_aoa(worksheet, [
-      [],
-      ["Ringkasan Kehadiran"],
-      ["Total Peserta", stats.total],
-      ["Hadir", stats.present],
-      ["Belum Hadir", stats.absent]
-    ], { origin: -1 });
+    worksheet.addRow([]); // Blank row
 
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Kehadiran");
+    // --- Header Tabel ---
+    const headers = ["No", "Nama", "Email", "NIM", "Status", "Prodi", "Angkatan", "Divisi", "Periode", "Kehadiran"];
+    const headerRow = worksheet.addRow(headers);
+    
+    // Style Header Row
+    headerRow.eachCell((cell) => {
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1F2937' } }; // Dark gray
+      cell.font = { name: 'Arial', bold: true, color: { argb: 'FFFFFFFF' } };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      cell.border = {
+        top: { style: 'thin' }, left: { style: 'thin' },
+        bottom: { style: 'thin' }, right: { style: 'thin' }
+      };
+    });
 
+    // Set Lebar Kolom (Widths)
+    worksheet.columns = [
+      { key: 'no', width: 5 },
+      { key: 'nama', width: 25 },
+      { key: 'email', width: 30 },
+      { key: 'nim', width: 15 },
+      { key: 'status', width: 15 },
+      { key: 'prodi', width: 25 },
+      { key: 'angkatan', width: 12 },
+      { key: 'divisi', width: 20 },
+      { key: 'periode', width: 15 },
+      { key: 'kehadiran', width: 15 }
+    ];
+
+    // --- Data Tabel ---
+    filteredUsers.forEach((u, index) => {
+      const rowData = [
+        index + 1,
+        u.nama,
+        u.email,
+        u.nim || "-",
+        u.status,
+        u.prodi || "-",
+        u.angkatan || "-",
+        u.divisi || "-",
+        u.periode || "-",
+        u.kehadiran ? "Hadir" : "Belum Hadir"
+      ];
+      const row = worksheet.addRow(rowData);
+      
+      row.eachCell((cell, colNumber) => {
+        // Alignment
+        if (colNumber === 1 || colNumber === 4 || colNumber === 10) {
+          cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        } else {
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        }
+        
+        // Borders
+        cell.border = {
+          top: { style: 'thin', color: { argb: 'FFD1D5DB' } },
+          left: { style: 'thin', color: { argb: 'FFD1D5DB' } },
+          bottom: { style: 'thin', color: { argb: 'FFD1D5DB' } },
+          right: { style: 'thin', color: { argb: 'FFD1D5DB' } }
+        };
+
+        // Custom warna untuk badge kehadiran
+        if (colNumber === 10) {
+          cell.font = { bold: true, color: { argb: u.kehadiran ? 'FF047857' : 'FFEF4444' } }; // Green/Red
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: u.kehadiran ? 'FFD1FAE5' : 'FFFEE2E2' } };
+        }
+      });
+    });
+
+    worksheet.addRow([]); // Blank row
+    worksheet.addRow([]); // Blank row
+
+    // --- Summary Section (Ringkasan Kehadiran) ---
+    const summaryStartRow = worksheet.lastRow.number + 1;
+    
+    // Title Summary
+    worksheet.mergeCells(`B${summaryStartRow}:D${summaryStartRow}`);
+    const sumTitle = worksheet.getCell(`B${summaryStartRow}`);
+    sumTitle.value = "Ringkasan Kehadiran";
+    sumTitle.font = { name: 'Arial', size: 12, bold: true };
+    sumTitle.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF3F4F6' } };
+    sumTitle.alignment = { vertical: 'middle', horizontal: 'center' };
+    sumTitle.border = { top: { style: 'medium' }, bottom: { style: 'medium' }, left: { style: 'medium' }, right: { style: 'medium' } };
+
+    // Total Peserta
+    worksheet.getCell(`B${summaryStartRow + 1}`).value = "Total Peserta";
+    const totalVal = worksheet.getCell(`D${summaryStartRow + 1}`);
+    totalVal.value = stats.total;
+    totalVal.font = { bold: true };
+    totalVal.alignment = { horizontal: 'center' };
+    
+    // Hadir
+    worksheet.getCell(`B${summaryStartRow + 2}`).value = "Hadir";
+    const hadirVal = worksheet.getCell(`D${summaryStartRow + 2}`);
+    hadirVal.value = stats.present;
+    hadirVal.font = { bold: true, color: { argb: 'FF047857' } };
+    hadirVal.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD1FAE5' } };
+    hadirVal.alignment = { horizontal: 'center' };
+
+    // Belum Hadir
+    worksheet.getCell(`B${summaryStartRow + 3}`).value = "Belum Hadir";
+    const absenVal = worksheet.getCell(`D${summaryStartRow + 3}`);
+    absenVal.value = stats.absent;
+    absenVal.font = { bold: true, color: { argb: 'FFEF4444' } };
+    absenVal.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFEE2E2' } };
+    absenVal.alignment = { horizontal: 'center' };
+
+    // Apply borders to the summary block
+    for(let i = 1; i <= 3; i++) {
+      worksheet.mergeCells(`B${summaryStartRow + i}:C${summaryStartRow + i}`);
+      const labelCell = worksheet.getCell(`B${summaryStartRow + i}`);
+      const valCell = worksheet.getCell(`D${summaryStartRow + i}`);
+      labelCell.font = { bold: true };
+      
+      [labelCell, valCell].forEach(c => {
+         c.border = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
+      });
+    }
+
+    // Generate Excel File
+    const buffer = await workbook.xlsx.writeBuffer();
     const now = new Date();
-    const fileName = `Attendance_Report_${now.toISOString().split('T')[0]}.xlsx`;
-
-    XLSX.writeFile(workbook, fileName);
+    const fileName = `Laporan_Kehadiran_DKM_${now.toISOString().split('T')[0]}.xlsx`;
+    saveAs(new Blob([buffer]), fileName);
 
     Swal.fire({
       icon: "success",
-      title: "Laporan Siap!",
-      text: "Laporan kehadiran berhasil diunduh.",
-      confirmButtonColor: "#3b82f6",
+      title: "Laporan Diunduh!",
+      text: "Laporan kehadiran berhasil digenerate dan diunduh.",
+      confirmButtonColor: "#0066FF",
     });
   };
 
