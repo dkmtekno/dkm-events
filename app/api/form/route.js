@@ -116,11 +116,11 @@ export async function POST(req) {
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9fafb; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb;">
           <div style="background-color: #2563eb; color: #ffffff; padding: 24px; text-align: center;">
             <h1 style="margin: 0; font-size: 24px; font-weight: 600;">Konfirmasi Pendaftaran</h1>
-            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 16px;">Buka Bersama DKM Paramadina</p>
+            <p style="margin: 8px 0 0; opacity: 0.9; font-size: 16px;">Maulid DKM Paramadina</p>
           </div>
           <div style="padding: 32px 24px; color: #374151; background-color: #ffffff;">
             <h2 style="margin-top: 0; color: #111827; font-size: 20px;">Halo, ${nama}!</h2>
-            <p style="line-height: 1.6; margin-bottom: 24px;">Terima kasih telah mendaftar event Buka Bersama sebagai <strong style="color: #2563eb;">${status}</strong> di DKM Paramadina. Berikut adalah detail pendaftaran Anda:</p>
+            <p style="line-height: 1.6; margin-bottom: 24px;">Terima kasih telah mendaftar event Maulid sebagai <strong style="color: #2563eb;">${status}</strong> di DKM Paramadina. Berikut adalah detail pendaftaran Anda:</p>
             
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: 15px;">
               <tbody>
