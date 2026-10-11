@@ -14,12 +14,32 @@ export async function PUT(req) {
       );
     }
 
-    const user = await prisma.user.update({
-      where: nim ? { nim } : { id }, // Gunakan nim jika ada, jika tidak gunakan id
-      data: { kehadiran },
+    const whereClause = id ? { id } : { nim };
+
+    const existing = await prisma.user.findUnique({
+      where: whereClause,
     });
 
-    return NextResponse.json(user, { status: 200 });
+    if (!existing) {
+      return NextResponse.json(
+        { error: "Data peserta tidak ditemukan." },
+        { status: 404 }
+      );
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: whereClause,
+      data: { kehadiran: kehadiran !== undefined ? Boolean(kehadiran) : true },
+    });
+
+    return NextResponse.json(
+      {
+        ...updatedUser,
+        user: updatedUser,
+        wasAlreadyPresent: existing.kehadiran,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error updating attendance:", error);
 
@@ -31,7 +51,7 @@ export async function PUT(req) {
     }
 
     return NextResponse.json(
-      { error: "Terjadi kesalahan" },
+      { error: "Terjadi kesalahan saat memperbarui kehadiran", details: error.message },
       { status: 500 }
     );
   }

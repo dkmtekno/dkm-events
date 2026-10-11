@@ -13,12 +13,15 @@ import {
   UserGroupIcon,
   CheckBadgeIcon,
   XCircleIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  QrCodeIcon
 } from "@heroicons/react/24/outline";
+import QrScannerModal from "../../components/QrScannerModal";
 
 export default function DaftarKehadiran() {
   const [users, setUsers] = useState([]);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
@@ -305,6 +308,31 @@ export default function DaftarKehadiran() {
     }
   };
 
+  const handleAttendanceRecorded = (updatedUser) => {
+    setUsers((prev) => {
+      const exists = prev.some(
+        (u) => u.id === updatedUser.id || (u.nim && u.nim === updatedUser.nim)
+      );
+      if (exists) {
+        return prev.map((u) =>
+          u.id === updatedUser.id || (u.nim && u.nim === updatedUser.nim)
+            ? { ...u, kehadiran: true }
+            : u
+        );
+      }
+      return [updatedUser, ...prev];
+    });
+
+    toast.success(`${updatedUser.nama} berhasil dicatat hadir!`, {
+      icon: '✅',
+      style: {
+        borderRadius: '12px',
+        background: '#065f46',
+        color: '#fff',
+      },
+    });
+  };
+
   if (!isAuthorized) return null;
 
   const containerVariants = {
@@ -335,18 +363,27 @@ export default function DaftarKehadiran() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex gap-4"
+            className="flex flex-wrap items-center gap-3"
           >
             <button
+              onClick={() => setIsScannerOpen(true)}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-3 rounded-xl flex items-center gap-2 font-semibold transition shadow-lg shadow-emerald-600/25 active:scale-95 cursor-pointer ring-2 ring-emerald-400/20"
+              title="Scan QR Tiket Kehadiran"
+            >
+              <QrCodeIcon className="w-5 h-5" />
+              <span>Scan QR Kehadiran</span>
+            </button>
+
+            <button
               onClick={fetchData}
-              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-sm cursor-pointer"
               title="Refresh Data"
             >
-              <ArrowPathIcon className={`w-5 h-5 text-slate-600 ${loading ? 'animate-spin' : ''}`} />
+              <ArrowPathIcon className={`w-5 h-5 text-slate-600 dark:text-slate-300 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={handleDownload}
-              className="btn-vibrant text-white px-6 py-3 rounded-xl flex items-center gap-2 font-semibold transition shadow-lg transition-transform active:scale-95"
+              className="btn-vibrant text-white px-5 py-3 rounded-xl flex items-center gap-2 font-semibold transition shadow-lg transition-transform active:scale-95 cursor-pointer"
             >
               <ArrowDownTrayIcon className="w-5 h-5" />
               <span>Ekspor Laporan</span>
@@ -507,6 +544,14 @@ export default function DaftarKehadiran() {
           </div>
         </motion.div>
       </div>
+
+      {/* Modal Scanner QR Code */}
+      <QrScannerModal
+        isOpen={isScannerOpen}
+        onClose={() => setIsScannerOpen(false)}
+        onAttendanceRecorded={handleAttendanceRecorded}
+        users={users}
+      />
     </div>
   );
 }

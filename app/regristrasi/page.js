@@ -18,7 +18,11 @@ import {
   CalendarIcon,
   ArrowLeftIcon,
   InformationCircleIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  QrCodeIcon,
+  ArrowDownTrayIcon,
+  CheckCircleIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 
 export default function FormPage() {
@@ -36,6 +40,7 @@ export default function FormPage() {
   const [slide, setSlide] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [role, setRole] = useState("");
+  const [registeredTicket, setRegisteredTicket] = useState(null);
   const MySwal = withReactContent(Swal);
   const router = useRouter();
 
@@ -107,6 +112,13 @@ export default function FormPage() {
       const data = await res.json();
 
       if (res.ok) {
+        setRegisteredTicket({
+          user: data.user,
+          qrCode: data.qrCode,
+          email: formData.email,
+          emailSent: data.emailSent,
+        });
+
         setFormData({
           nama: "",
           prodi: "",
@@ -118,20 +130,7 @@ export default function FormPage() {
           periode: "",
         });
         setSubmitted(false);
-
-        MySwal.fire({
-          title: "Terima Kasih 🎉",
-          text: "Pendaftaran kamu berhasil!",
-          icon: "success",
-          confirmButtonText: "Selesai",
-          customClass: {
-            confirmButton: 'bg-brand-primary px-8 py-3 rounded-full text-white font-semibold'
-          }
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.push('/');
-          }
-        });
+        toast.success("Pendaftaran berhasil! QR Code telah diterbitkan.");
       } else {
         toast.error(data.error || "Terjadi kesalahan.");
         setSubmitted(false);
@@ -140,6 +139,18 @@ export default function FormPage() {
       toast.error("Gagal mengirim permintaan.");
       setSubmitted(false);
     }
+  };
+
+  const handleDownloadQr = () => {
+    if (!registeredTicket?.qrCode) return;
+    const link = document.createElement("a");
+    link.href = registeredTicket.qrCode;
+    const cleanName = (registeredTicket.user?.nama || "peserta").replace(/[^a-zA-Z0-9]/g, "_");
+    link.download = `Tiket_DKM_${cleanName}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("QR Code tiket berhasil diunduh!");
   };
 
   const containerVariants = {
@@ -208,10 +219,10 @@ export default function FormPage() {
 
                 <div className="space-y-2 text-center md:text-left">
                   <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
-                    {slide === 0 ? "Maulid DKM Paramadina" : "DKM Paramadina"}
+                    {slide === 0 ? "Damara DKM Paramadina" : "DKM Paramadina"}
                   </h3>
                   <p className="text-neutral-300 text-sm leading-relaxed font-light">
-                    &quot;Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah dalam Kehidupan Mahasiswa&quot;
+                    {slide === 0 ? "DKM aksi maulid dan rangkaian amal" : `${"Meneladani Akhlak Rasulullah dengan Menghidupkan Sunnah dalam Kehidupan Mahasiswa"}`}
                   </p>
                 </div>
               </motion.div>
@@ -614,6 +625,112 @@ export default function FormPage() {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Modal Tiket Berhasil & QR Code */}
+      <AnimatePresence>
+        {registeredTicket && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 20, opacity: 0 }}
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-slate-900 dark:text-white my-8"
+            >
+              <button
+                onClick={() => setRegisteredTicket(null)}
+                className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                title="Tutup"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
+
+              <div className="text-center space-y-4">
+                <div className="w-14 h-14 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto ring-8 ring-emerald-500/5">
+                  <CheckCircleIcon className="w-8 h-8" />
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight">Pendaftaran Berhasil! 🎉</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    Simpan QR Code berikut untuk presensi kehadiran saat acara.
+                  </p>
+                </div>
+
+                {/* QR Code Container */}
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 inline-block shadow-inner">
+                  {registeredTicket.qrCode ? (
+                    <img
+                      src={registeredTicket.qrCode}
+                      alt="QR Code Kehadiran"
+                      className="w-52 h-52 mx-auto rounded-xl shadow-md bg-white p-2"
+                    />
+                  ) : (
+                    <div className="w-52 h-52 flex items-center justify-center text-slate-400">
+                      QR Code tidak tersedia
+                    </div>
+                  )}
+                  <p className="text-[11px] font-mono text-slate-400 mt-2 truncate max-w-[210px] mx-auto">
+                    ID: {registeredTicket.user?.id}
+                  </p>
+                </div>
+
+                {/* Participant Info */}
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-3.5 text-left text-xs space-y-1.5 border border-slate-100 dark:border-slate-800">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Nama:</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">{registeredTicket.user?.nama}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Kategori:</span>
+                    <span className="font-semibold text-brand-primary">{registeredTicket.user?.status}</span>
+                  </div>
+                  {registeredTicket.user?.nim && (
+                    <div className="flex justify-between">
+                      <span className="text-slate-500 dark:text-slate-400">NIM:</span>
+                      <span className="font-mono text-slate-700 dark:text-slate-300">{registeredTicket.user?.nim}</span>
+                    </div>
+                  )}
+                  {registeredTicket.user?.prodi && registeredTicket.user?.prodi !== "-" && (
+                    <div className="flex justify-between">
+                      <span className="text-slate-500 dark:text-slate-400">Prodi:</span>
+                      <span className="text-slate-700 dark:text-slate-300">{registeredTicket.user?.prodi}</span>
+                    </div>
+                  )}
+                </div>
+
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  📧 QR Code ini juga otomatis dikirimkan ke email <strong className="text-slate-700 dark:text-slate-200">{registeredTicket.email}</strong>.
+                </p>
+
+                {/* Actions */}
+                <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={handleDownloadQr}
+                    className="flex-1 py-3 px-4 rounded-xl bg-brand-primary hover:bg-blue-600 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/25 transition-all cursor-pointer"
+                  >
+                    <ArrowDownTrayIcon className="w-4 h-4" />
+                    <span>Unduh QR Code</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRegisteredTicket(null);
+                      router.push('/');
+                    }}
+                    className="py-3 px-5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all cursor-pointer"
+                  >
+                    Selesai
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
